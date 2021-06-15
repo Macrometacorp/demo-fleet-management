@@ -11,6 +11,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import {Button} from '@material-ui/core'
 import AlertFilters from './AlertFilters';
 import ModalComponent from '../ModalComponent';
+import { activeButtonClass } from '../../services/util';
 
 const useStyles = makeStyles({
   table: {
@@ -21,8 +22,10 @@ const useStyles = makeStyles({
   },
   pagination: {
     borderRadius:"none"
-  }
+  },
+  activeActionButton: activeButtonClass,
 });
+
 
 export default function AlertsTable() {
   const classes = useStyles();
@@ -44,7 +47,7 @@ export default function AlertsTable() {
       dateLogged: 'Just Now',	
       statusLevel: 'Critical',	
       maintenancePlanned: 'No',	
-      suggestedAction: <Button variant="contained" onClick={()=>setOpenModal({status:true, data: {id:3}})}>Book</Button>
+      suggestedAction: <Button variant="contained" color="primary" className={classes.activeActionButton} onClick={()=>setOpenModal({status:true, data: {id:3}})}>Book</Button>
     },
     {
       vehicleID: 'PF16VBD',
@@ -60,7 +63,7 @@ export default function AlertsTable() {
       dateLogged: 'Just Now',	
       statusLevel: 'Critical',	
       maintenancePlanned: 'No',	
-      suggestedAction: <Button variant="contained" onClick={()=>setOpenModal({status:true, data:{id:4}})}>Book</Button>
+      suggestedAction: <Button color="primary" variant="contained" className={classes.activeActionButton} onClick={()=>setOpenModal({status:true, data:{id:4}})}>Book</Button>
     },
   ]
 

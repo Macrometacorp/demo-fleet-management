@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Container, makeStyles, Grid } from "@material-ui/core";
 import Header from "./Header";
 import ButtonBar from "./ButtonBar";
-import ChartComponent from "./Chart";
 import LineChart from "./LineChart";
 import FleetStatusTable from "./tables/FleetStatusTable";
 import InsightsTable from "./tables/InsightsTable";
@@ -37,7 +36,7 @@ const Dashboard = () => {
   const [isStreamStarted, setIsStreamStarted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isStopLoading, setIsStopLoading] = useState(false);
-  const [isClearLoading, setIsClearLoading] = useState(false);
+  // const [isClearLoading, setIsClearLoading] = useState(false);
 
   //button callback for all the rest
   const handleOnStart = () => {
@@ -64,7 +63,6 @@ const Dashboard = () => {
           <Grid item xs={6} className={classes.section}>
             <Grid container direction="row" alignItems="flex-start">
               <Grid item xs={6} className={classes.section}>
-                {/* <ChartComponent /> */}
                 <LineChart />
               </Grid>
               <Grid item xs={6} className={classes.section}>
@@ -79,7 +77,6 @@ const Dashboard = () => {
           </Grid>
           <Grid item xs={6} className={classes.section}>
             <AlertsTable />
-            {/* <LineChart /> */}
           </Grid>
         </Grid>
       </Container>

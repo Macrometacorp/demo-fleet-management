@@ -1,6 +1,5 @@
 import Chart from "chart.js/auto";
-import React from "react";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import ChartFilters from "./ChartFilters";
 

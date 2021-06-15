@@ -37,10 +37,7 @@ const Header = () => {
         variant="contained"
         className={classes.intializeButton}
         onClick={() => {
-          window.open(
-            "https://github.com/Macrometacorp/demo-event-hub",
-            "_blank"
-          );
+          console.log('Intialize')
         }}
       >
         Intialize
@@ -50,7 +47,7 @@ const Header = () => {
         className={classes.aboutButton}
         onClick={() => {
           window.open(
-            "https://github.com/Macrometacorp/demo-event-hub",
+            "https://github.com/Macrometacorp/demo-fleet-management",
             "_blank"
           );
         }}
