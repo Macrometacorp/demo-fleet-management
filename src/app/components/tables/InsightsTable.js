@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 const useStyles2 = makeStyles({
   table: {
     // minWidth: 200,
-  },
+  }
 });
 
 const data = [
@@ -57,13 +57,13 @@ export default function InsightsTable() {
         <TableBody>
           {data && data.map((row)=>(
             <TableRow key={Math.random()}>
-              <TableCell>
+              <TableCell style={{border: '1px solid'}}>
                   {row.col1}
               </TableCell>
-              <TableCell>
+              <TableCell style={{border: '1px solid'}}>
                 {row.col2}
               </TableCell>
-              <TableCell>
+              <TableCell style={{border: '1px solid'}}>
                 {row.col3}
               </TableCell>
             </TableRow>)

@@ -26,7 +26,7 @@ const useStyles = makeStyles({
 
 export default function ModalTable() {
   const classes = useStyles();
-  const [selectedDate, setSelectedDate] = useState("10/10/2019");
+  const [selectedDate, setSelectedDate] = useState("06/15/2021");
   const data = [
     {
       maintenanceCenter: "Audi Service Center",
@@ -34,7 +34,6 @@ export default function ModalTable() {
       location: "Liverpool",
       estimatedTime: "1Day",
       estimatedCost: "$100",
-      // select: 'Select'
     },
     {
       maintenanceCenter: "Audi Service Center",
@@ -42,7 +41,20 @@ export default function ModalTable() {
       location: "Liverpool",
       estimatedTime: "1Day",
       estimatedCost: "$100",
-      // select:
+    },
+    {
+      maintenanceCenter: "Audi Service Center",
+      rating: "4.5/5.0",
+      location: "Liverpool",
+      estimatedTime: "1Day",
+      estimatedCost: "$100",
+    },
+    {
+      maintenanceCenter: "Audi Service Center",
+      rating: "4.5/5.0",
+      location: "Liverpool",
+      estimatedTime: "1Day",
+      estimatedCost: "$100",
     },
   ];
 
@@ -63,8 +75,8 @@ export default function ModalTable() {
             </TableHead>
             <TableBody>
               {data &&
-                data.map((row) => (
-                  <TableRow key={Math.random()}>
+                data.map((row,i) => (
+                  <TableRow key={Math.random()} style ={ i % 2? { background : 'rgb(208 225 243)' }:{  }}>
                     <TableCell align="center">
                       {row.maintenanceCenter}
                     </TableCell>

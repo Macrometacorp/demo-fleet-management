@@ -65,6 +65,14 @@ export default function AlertsTable() {
       maintenancePlanned: 'No',	
       suggestedAction: <Button color="primary" variant="contained" className={classes.activeActionButton} onClick={()=>setOpenModal({status:true, data:{id:4}})}>Book</Button>
     },
+    {
+      vehicleID: 'PF16VBD',
+      alertDescription: 'No Start',	
+      dateLogged: 'Just Now',	
+      statusLevel: 'Critical',	
+      maintenancePlanned: 'Yes',	
+      suggestedAction: 'Booked 25 Aug 2021'
+    },
   ]
 
 
@@ -86,8 +94,8 @@ export default function AlertsTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data && data.map((row)=>(
-            <TableRow key={Math.random()}>
+          {data && data.map((row,i)=>(
+            <TableRow key={Math.random()} style ={ i % 2? { background : 'rgb(208 225 243)' }:{  }}>
             <TableCell align="center">{row.vehicleID}</TableCell>
             <TableCell align="center">{row.alertDescription}</TableCell>
             <TableCell align="center">{row.dateLogged}</TableCell>

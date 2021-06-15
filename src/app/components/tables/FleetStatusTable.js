@@ -13,11 +13,12 @@ const useStyles2 = makeStyles({
   table: {
     // minWidth: 200,
   },
+
 });
 
 const data = [
   {
-    col1: `Attention required  (Next 7 days)`,
+    col1: `Attention required   (Next 7 days)`,
     col2: <ArrowDropDownIcon/>,
     col3: '1048'
   },
@@ -58,81 +59,17 @@ export default function FleetStatusTable() {
 
           {data && data.map((row)=>(
             <TableRow key={Math.random()}>
-              <TableCell style={{width:100}}>
+              <TableCell style={{border: '1px solid'}}>
                   {row.col1}
               </TableCell>
-              <TableCell>
+              <TableCell style={{border: '1px solid'}}>
                 <ArrowDropUpIcon/>
               </TableCell>
-              <TableCell>
+              <TableCell style={{border: '1px solid'}}>
                 {row.col3}
               </TableCell>
             </TableRow>
           ))}
-            
-            {/* <TableRow key={Math.random()}>
-              <TableCell>
-                  Critical Status
-                  <br/>
-                  (Next 7 days)
-              </TableCell>
-              <TableCell>
-                <ArrowDropDownIcon/>
-              </TableCell>
-              <TableCell>
-                1048
-              </TableCell>
-            </TableRow>
-            <TableRow key={Math.random()}>
-              <TableCell>
-                  Fleet Health
-                  <br/>
-                  (last 7 days)
-              </TableCell>
-              <TableCell>
-                <ArrowDropDownIcon/>
-              </TableCell>
-              <TableCell>
-                1048
-              </TableCell>
-            </TableRow>
-            <TableRow key={Math.random()}>
-              <TableCell>
-                  Unplanned Maintenance
-                  <br/>
-                  (last 7 days)
-              </TableCell>
-              <TableCell>
-                <ArrowDropUpIcon/>
-              </TableCell>
-              <TableCell>
-                1048
-              </TableCell>
-            </TableRow>
-            <TableRow key={Math.random()}>
-              <TableCell>
-                  Planned Maintenance
-                  <br/>
-                  (Next 7 days)
-              </TableCell>
-              <TableCell>
-                <ArrowDropUpIcon/>
-              </TableCell>
-              <TableCell>
-                1048
-              </TableCell>
-            </TableRow>
-            <TableRow key={Math.random()}>
-              <TableCell>
-                  Predicted Maintenance
-              </TableCell>
-              <TableCell>
-                <ArrowDropDownIcon/>
-              </TableCell>
-              <TableCell>
-                1048
-              </TableCell>
-            </TableRow> */}
         </TableBody>
       </Table>
     </TableContainer>

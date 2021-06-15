@@ -13,6 +13,10 @@ const theme = createMuiTheme({
             stickyHeader: {
                 backgroundColor: "#d0e0f3",
             },
+            head: {
+                color: '#ffffff',
+                fontWeight: 900,
+            }
         },
         MuiTypography: {
             root: {
@@ -75,6 +79,11 @@ const theme = createMuiTheme({
                     color:'#ffffff',
                 }
               },
+        },
+        MuiTableHead: {
+            root: {
+                backgroundColor: '#4b81c3'
+            }
         },
     },
 });
