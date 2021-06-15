@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles, Button } from "@material-ui/core";
-import { activeButtonClass } from '../../services/util';
+import { activeButtonClass } from "../../services/util";
 
 const useStyles = makeStyles((theme) => ({
   actionButton: {
@@ -13,7 +13,8 @@ const useStyles = makeStyles((theme) => ({
   activeActionButton: activeButtonClass,
   root: {
     "& > *": {
-      margin: theme.spacing(1),
+      marginRight: theme.spacing(2),
+      marginTop: "0.6rem",
     },
   },
 }));

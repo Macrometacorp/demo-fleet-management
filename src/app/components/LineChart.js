@@ -1,34 +1,13 @@
 import Chart from "chart.js/auto";
 import React, { useEffect, useRef } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
+import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import ChartFilters from "./ChartFilters";
 
 // LineChart
 
-function getRandomDateArray(numItems) {
-  // Create random array of objects (with date)
-  let data = [];
-  let baseTime = new Date("2018-05-01T00:00:00").getTime();
-  let dayMs = 24 * 60 * 60 * 1000;
-  for (var i = 0; i < numItems; i++) {
-    data.push({
-      time: new Date(baseTime + i * dayMs),
-      value: Math.round(20 + 80 * Math.random()),
-    });
-  }
-  return data;
-}
-
-let data = [];
-
-data.push({
-  // title: 'Visits',
-  data: getRandomDateArray(20),
-});
-
 const useStyles = makeStyles({
   root: {
-    // paddingTop: "3rem",
     flexDirection: "column",
     display: "flex",
   },
@@ -45,12 +24,18 @@ const useStyles = makeStyles({
   chartCanvas: {
     height: "19.5rem",
   },
+  heading: {
+    margin: "10px",
+    fontSize: "28px",
+    fontWeight: 400,
+  },
 });
 
 const LineChart = () => {
   const canvasRef = useRef(null);
   const classes = useStyles();
-  const chartData = { data: data[0].data, color: "#3E517A" };
+
+  let chartData;
   let myChart;
 
   const updateChart = () => {
@@ -71,55 +56,56 @@ const LineChart = () => {
       type: "line",
       options: {
         maintainAspectRatio: false,
-        scales: {
-          xAxes: [
-            {
-              type: "time",
-              time: {
-                unit: "week",
-              },
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                min: 0,
-              },
-            },
-          ],
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+        elements: {
+          point: {
+            radius: 0,
+          },
         },
       },
       data: {
-        labels: chartData.data.map((d, i) => i),
+        labels: [1, 2, 3, 4, 5, 6, 7],
         datasets: [
           {
-            label: "",
-            data: chartData.data.map((d) => d.value),
-            fill: "none",
-            backgroundColor: chartData.color,
-            pointRadius: 2,
-            borderColor: chartData.color,
+            data: [5, 10, 20, 10, 20, 30],
+            backgroundColor: "red",
+            borderColor: "red",
             borderWidth: 1,
-            lineTension: 0,
+          },
+          {
+            data: [-5, -10, -20, -10, -20, -30],
+            backgroundColor: "yellow",
+            borderColor: "yellow",
+            borderWidth: 1,
           },
         ],
       },
     });
+    return () => {
+      myChart.destroy();
+    };
   }, []);
 
   return (
     <>
-    <div className={classes.root}>
-      <Grid container alignItems="center" className={classes.selectGrid}>
-        <Grid item>
-          <h3> Fleet Status</h3>
+      <div className={classes.root}>
+        <Grid container alignItems="center">
+          <Grid item>
+            <div style={{ display: "flex" }}>
+              <LocalShippingIcon style={{ fontSize: 50 }} />
+              <h3 className={classes.heading}> Fleet Status</h3>
+            </div>
+          </Grid>
         </Grid>
-      </Grid>
-      <div className={classes.chartCanvas}>
-      <canvas ref={canvasRef} />
+        <div className={classes.chartCanvas}>
+          <canvas ref={canvasRef} />
+        </div>
+        <ChartFilters />
       </div>
-      <ChartFilters />
-    </div>
     </>
   );
 };

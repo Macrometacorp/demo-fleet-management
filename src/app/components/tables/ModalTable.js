@@ -65,18 +65,21 @@ export default function ModalTable() {
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Vechicle ID</TableCell>
-                <TableCell align="center">Alert &nbsp; Description</TableCell>
-                <TableCell align="center">Date &nbsp; Logged</TableCell>
-                <TableCell align="center">Status level</TableCell>
-                <TableCell align="center">Maintenance &nbsp; Planned</TableCell>
-                <TableCell align="center">Suggested &nbsp; Action</TableCell>
+                <TableCell>Maintenance Center</TableCell>
+                <TableCell align="center">Rating</TableCell>
+                <TableCell align="center">Location</TableCell>
+                <TableCell align="center">Estimated Time</TableCell>
+                <TableCell align="center">Estimated Cost</TableCell>
+                <TableCell align="center">Select</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data &&
-                data.map((row,i) => (
-                  <TableRow key={Math.random()} style ={ i % 2? { background : 'rgb(208 225 243)' }:{  }}>
+                data.map((row, i) => (
+                  <TableRow
+                    key={Math.random()}
+                    style={i % 2 ? { background: "rgb(208 225 243)" } : {}}
+                  >
                     <TableCell align="center">
                       {row.maintenanceCenter}
                     </TableCell>

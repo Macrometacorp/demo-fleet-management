@@ -59,15 +59,23 @@ const Dashboard = () => {
           isStopButtonDisabled={isStopLoading}
           isStreamStarted={isStreamStarted}
         />
-        <Grid container direction="row" alignItems="flex-start">
+        <Grid
+          container
+          direction="row"
+          style={{ paddingTop: "16px" }}
+          alignItems="flex-start"
+        >
           <Grid item xs={6} className={classes.section}>
             <Grid container direction="row" alignItems="flex-start">
               <Grid item xs={6} className={classes.section}>
                 <LineChart />
               </Grid>
-              <Grid item xs={6} className={classes.section}>
-                <br />
-                <br />
+              <Grid
+                item
+                xs={6}
+                className={classes.section}
+                style={{ marginTop: "4rem" }}
+              >
                 <FleetStatusTable />
               </Grid>
               <Grid item xs={12} className={classes.section}>

@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { Button, makeStyles } from "@material-ui/core";
-import { activeButtonClass } from '../services/util';
+import { activeButtonClass } from "../services/util";
 
 const useStyles = makeStyles((theme) => ({
-  activeActionButton: activeButtonClass,
+  activeActionButton: { ...activeButtonClass, width: "5rem" },
   root: {
     "& > *": {
       margin: theme.spacing(1),
@@ -41,7 +41,7 @@ const DatePicker = (props) => {
       >
         Select
       </Button>
-      {props.initialDate}
+      {/* {props.initialDate} */}
     </>
   );
 };

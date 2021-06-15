@@ -24,6 +24,7 @@ export default function ChartFilters() {
       exclusive
       onChange={handleAlignment}
       aria-label="text alignment"
+      style={{ margin: "15px 0px" }}
     >
       <ToggleButton value="week" className={classes.actionButton}>
         Week
