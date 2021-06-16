@@ -24,39 +24,20 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ModalTable() {
+export default function ModalTable({handleSelect}) {
   const classes = useStyles();
-  const [selectedDate, setSelectedDate] = useState("06/15/2021");
-  const data = [
-    {
+  const [selectedDate, ] = useState("06/15/2021");
+
+  const tdata = {
       maintenanceCenter: "Audi Service Center",
       rating: "4.5/5.0",
       location: "Liverpool",
       estimatedTime: "1Day",
       estimatedCost: "$100",
-    },
-    {
-      maintenanceCenter: "Audi Service Center",
-      rating: "4.5/5.0",
-      location: "Liverpool",
-      estimatedTime: "1Day",
-      estimatedCost: "$100",
-    },
-    {
-      maintenanceCenter: "Audi Service Center",
-      rating: "4.5/5.0",
-      location: "Liverpool",
-      estimatedTime: "1Day",
-      estimatedCost: "$100",
-    },
-    {
-      maintenanceCenter: "Audi Service Center",
-      rating: "4.5/5.0",
-      location: "Liverpool",
-      estimatedTime: "1Day",
-      estimatedCost: "$100",
-    },
-  ];
+    }
+  const data = Array.from({ length: 4 }, (i, j) =>
+       ({ ...tdata, id: j + 1 })
+  );
 
   return (
     <>
@@ -91,7 +72,7 @@ export default function ModalTable() {
                       <DatePicker
                         key={Math.random()}
                         onDateChange={(date) => {
-                          setSelectedDate(date);
+                          handleSelect({date, mantenanceCenterID: row.id})
                         }}
                         initialDate={selectedDate}
                       />

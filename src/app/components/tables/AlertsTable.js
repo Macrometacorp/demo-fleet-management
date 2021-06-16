@@ -15,6 +15,7 @@ import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import AlertFilters from "./AlertFilters";
 import ModalComponent from "../ModalComponent";
 import { activeButtonClass, slicer } from "../../services/util";
+import moment from 'moment';
 
 const useStyles = makeStyles({
   table: {
@@ -34,12 +35,16 @@ const useStyles = makeStyles({
   },
 });
 
-
 export default function AlertsTable() {
   const classes = useStyles();
-  const [openModal, setOpenModal] = useState({ status: false, data: 1 });
-  const [alertStats, setAlertStats] = useState({ all: 0, critical: 0, attention: 0, booked:0 });
-  const [ alertFilter, setAlterFilter ] = useState('all');
+  const [openModal, setOpenModal] = useState({ status: false, data: {} });
+  const [alertStats, setAlertStats] = useState({
+    all: 0,
+    critical: 0,
+    attention: 0,
+    booked: 0,
+  });
+  const [alertFilter, setAlterFilter] = useState("all");
   const [fdata, setFData] = useState([]);
   const [odata, setOData] = useState([]);
   const [tdata, setTData] = useState([]);
@@ -47,6 +52,24 @@ export default function AlertsTable() {
   const handleChange = (event, value) => {
     setPage(value);
   };
+
+  const handleBooking = (data) => {
+    let tdata = odata.map((item)=>{
+      if(item.id === data.id) {
+        item.maintenancePlanned = 'Yes'
+        const date = new Date(data.date)
+        let str = moment(date).format("D MMM YYYY");
+        item.suggestedAction = (
+          <>
+            Booked <br />
+            <span>{str}</span>
+          </>
+        )
+      }
+      return item;
+    })
+    setOData(tdata);
+  }
 
   let data = [
     {
@@ -68,51 +91,45 @@ export default function AlertsTable() {
       dateLogged: "Just Now",
       statusLevel: "Attention",
       maintenancePlanned: "No",
-      suggestedAction: (
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.activeActionButton}
-          onClick={() => setOpenModal({ status: true, data: { id: 3 } })}
-        >
-          Book
-        </Button>
-      ),
     },
   ];
 
-  useEffect(()=>{
-    const arr = Array.from({length:60}, (i, j)=>(j % 2 === 0 ? data[0] : data[1]));
-    setOData(arr)
-  },[])
+  useEffect(() => {
+    const arr = Array.from({ length: 60 }, (i, j) =>
+      j % 2 === 0
+        ? { ...data[0], id: j + 1, vehicleID: `${data[0].vehicleID}_${j + 1}` }
+        : { ...data[1], id: j + 1, vehicleID: `${data[0].vehicleID}_${j + 1}` }
+    );
+    setOData(arr);
+  }, []);
 
   useEffect(() => {
     let data = odata.filter((item) => {
       let filter = alertFilter.toLowerCase();
       if (filter === "all") return true;
-      if(filter === 'booked') return item.maintenancePlanned.toLowerCase() === 'yes';
+      if (filter === "booked")
+        return item.maintenancePlanned.toLowerCase() === "yes";
       return item.statusLevel.toLowerCase() === filter;
     });
-    // setFData(data)
     const tempData = slicer(data, 8);
     setFData(tempData);
-    setTData(tempData[page-1 | 0]);
+    setTData(tempData[(page - 1) | 0]);
     setPage(1);
   }, [alertFilter, odata]);
 
-  useEffect(()=>{
-    setTData(fdata[page-1])
-  },[page])
+  useEffect(() => {
+    setTData(fdata[page - 1]);
+  }, [page]);
 
-  useEffect(()=>{
-    let stats = {all:odata.length,critical:0,attention:0,booked:0}
+  useEffect(() => {
+    let stats = { all: odata.length, critical: 0, attention: 0, booked: 0 };
     odata.forEach((item) => {
-      if(item.maintenancePlanned.toLowerCase() === 'yes')  stats.booked += 1;
-      if(item.statusLevel.toLowerCase() === 'critical')  stats.critical += 1;
-      if(item.statusLevel.toLowerCase() === 'attention')  stats.attention += 1;
+      if (item.maintenancePlanned.toLowerCase() === "yes") stats.booked += 1;
+      if (item.statusLevel.toLowerCase() === "critical") stats.critical += 1;
+      if (item.statusLevel.toLowerCase() === "attention") stats.attention += 1;
     });
     setAlertStats(stats);
-  },[odata])
+  }, [odata]);
 
   return (
     <>
@@ -146,11 +163,33 @@ export default function AlertsTable() {
                     <TableCell align="center">{row.vehicleID}</TableCell>
                     <TableCell align="center">{row.alertDescription}</TableCell>
                     <TableCell align="center">{row.dateLogged}</TableCell>
-                    <TableCell align="center" style={{color: `${row.statusLevel === 'Critical' ? 'red' : ''}`}}>{row.statusLevel}</TableCell>
+                    <TableCell
+                      align="center"
+                      style={{
+                        color: `${row.statusLevel === "Critical" ? "red" : ""}`,
+                      }}
+                    >
+                      {row.statusLevel}
+                    </TableCell>
                     <TableCell align="center">
                       {row.maintenancePlanned}
                     </TableCell>
-                    <TableCell align="center">{row.suggestedAction}</TableCell>
+                    <TableCell align="center">
+                      {row.maintenancePlanned.toLowerCase() === "yes" ? (
+                        row.suggestedAction
+                      ) : (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          className={classes.activeActionButton}
+                          onClick={() =>
+                            setOpenModal({ status: true, data: row })
+                          }
+                        >
+                          Book
+                        </Button>
+                      )}
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
@@ -160,13 +199,14 @@ export default function AlertsTable() {
             count={fdata.length}
             showFirstButton
             showLastButton
-            page={page} 
+            page={page}
             onChange={handleChange}
           />
         </TableContainer>
         <ModalComponent
           openModal={openModal}
           closeModal={() => setOpenModal({ status: false, data: { id: 0 } })}
+          handleSelect={(data)=>handleBooking(data)}
         />
       </div>
     </>

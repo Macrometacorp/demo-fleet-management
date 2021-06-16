@@ -16,9 +16,12 @@ let closeImg = {
 };
 
 export default function ModalComponent(props) {
-  const { openModal, closeModal } = props;
+  const { openModal, closeModal, handleSelect } = props;
   const [open, setOpen] = React.useState(false);
-  const [modalData, setModalData] = useState({});
+  const [modalData, setModalData] = useState({
+    status: false,
+    data: {}
+  });
 
   useEffect(() => {
     setOpen(openModal.status);
@@ -29,7 +32,13 @@ export default function ModalComponent(props) {
     setOpen(false);
     closeModal();
   };
-  const { id } = modalData;
+
+  const handleSelectDate = (data) => {
+    setOpen(false);
+    closeModal();
+    handleSelect({...data, id:modalData.id})
+  };
+  const { vehicleID = 0 } = modalData;
   return (
     <React.Fragment>
       <Dialog
@@ -40,7 +49,7 @@ export default function ModalComponent(props) {
         aria-labelledby="max-width-dialog-title"
       >
         <DialogTitle id="max-width-dialog-title">
-          Optional sizes - {id}
+          {vehicleID}
           <CancelPresentationIcon
             fontSize="large"
             onClick={handleClose}
@@ -49,14 +58,9 @@ export default function ModalComponent(props) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <ModalTable />
+            <ModalTable handleSelect={(data)=>handleSelectDate(data)}/>
           </DialogContentText>
         </DialogContent>
-        {/* <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Close
-          </Button>
-        </DialogActions> */}
       </Dialog>
     </React.Fragment>
   );
