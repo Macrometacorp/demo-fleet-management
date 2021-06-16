@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles, Button } from "@material-ui/core";
 import { activeButtonClass } from "../../services/util";
 
@@ -19,11 +19,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AlertFilters() {
+export default function AlertFilters({stats, setAlterFilter}) {
   const classes = useStyles();
   const [selected, setSelected] = useState("all");
+  const { all, critical, attention, booked } = stats;
   const computeClass = (val) =>
     `${selected === val ? classes.activeActionButton : classes.actionButton}`;
+
+  useEffect(()=>{
+    setAlterFilter(selected);
+  },[selected])
 
   return (
     <>
@@ -34,7 +39,7 @@ export default function AlertFilters() {
           onClick={() => setSelected("all")}
           className={computeClass("all")}
         >
-          All
+          All ({all})
         </Button>
         <Button
           variant="outlined"
@@ -42,7 +47,7 @@ export default function AlertFilters() {
           onClick={() => setSelected("critical")}
           className={computeClass("critical")}
         >
-          Critical
+          Critical ({critical})
         </Button>
         <Button
           variant="outlined"
@@ -50,7 +55,7 @@ export default function AlertFilters() {
           onClick={() => setSelected("attention")}
           className={computeClass("attention")}
         >
-          Attention
+          Attention ({attention})
         </Button>
         <Button
           variant="outlined"
@@ -58,7 +63,7 @@ export default function AlertFilters() {
           onClick={() => setSelected("booked")}
           className={computeClass("booked")}
         >
-          Booked
+          Booked ({booked})
         </Button>
       </div>
     </>

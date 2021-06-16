@@ -1,14 +1,16 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
+import React, { useState, useEffect } from "react";
+import {
+  makeStyles,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  TableHead,
+  Paper,
+  Button,
+} from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
-import { Button } from "@material-ui/core";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import AlertFilters from "./AlertFilters";
 import ModalComponent from "../ModalComponent";
@@ -32,9 +34,14 @@ const useStyles = makeStyles({
   },
 });
 
+
 export default function AlertsTable() {
   const classes = useStyles();
   const [openModal, setOpenModal] = useState({ status: false, data: 1 });
+  const [alertStats, setAlertStats] = useState({ all: 0, critical: 1, attention: 0, booked:0 });
+  const [ alertFilter, setAlterFilter ] = useState('all');
+  const [fdata, setFData] = useState([]);
+  const [odata, setOData] = useState([]);
 
   let data = [
     {
@@ -54,7 +61,7 @@ export default function AlertsTable() {
       vehicleID: "PF16VBD",
       alertDescription: "No Start",
       dateLogged: "Just Now",
-      statusLevel: "Critical",
+      statusLevel: "Attention",
       maintenancePlanned: "No",
       suggestedAction: (
         <Button
@@ -69,7 +76,29 @@ export default function AlertsTable() {
     },
   ];
 
-  data = [...data, ...data, ...data, ...data];
+  useEffect(()=>{
+    setOData([...data, ...data, ...data, ...data])
+  },[])
+
+  useEffect(() => {
+    let data = odata.filter((item) => {
+      let filter = alertFilter.toLowerCase();
+      if (filter === "all") return true;
+      if(filter === 'booked') return item.maintenancePlanned.toLowerCase() === 'yes';
+      return item.statusLevel.toLowerCase() === filter;
+    });
+    setFData(data)
+  }, [alertFilter, odata]);
+
+  useEffect(()=>{
+    let stats = {all:odata.length,critical:0,attention:0,booked:0}
+    odata.forEach((item) => {
+      if(item.maintenancePlanned.toLowerCase() === 'yes')  stats.booked += 1;
+      if(item.statusLevel.toLowerCase() === 'critical')  stats.critical += 1;
+      if(item.statusLevel.toLowerCase() === 'attention')  stats.attention += 1;
+    });
+    setAlertStats(stats);
+  },[odata])
 
   return (
     <>
@@ -77,7 +106,7 @@ export default function AlertsTable() {
         <NotificationsActiveIcon style={{ fontSize: 50 }} />
         <h3 className={classes.heading}>Alerts</h3>
       </div>
-      <AlertFilters />
+      <AlertFilters stats={alertStats} setAlterFilter={setAlterFilter} />
       <div className={classes.root}>
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="simple table">
@@ -95,8 +124,8 @@ export default function AlertsTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {data &&
-                data.map((row, i) => (
+              {fdata &&
+                fdata.map((row, i) => (
                   <TableRow
                     key={Math.random()}
                     style={i % 2 ? { background: "rgb(208 225 243)" } : {}}
@@ -104,7 +133,7 @@ export default function AlertsTable() {
                     <TableCell align="center">{row.vehicleID}</TableCell>
                     <TableCell align="center">{row.alertDescription}</TableCell>
                     <TableCell align="center">{row.dateLogged}</TableCell>
-                    <TableCell align="center">{row.statusLevel}</TableCell>
+                    <TableCell align="center" style={{color: `${row.statusLevel === 'Critical' ? 'red' : ''}`}}>{row.statusLevel}</TableCell>
                     <TableCell align="center">
                       {row.maintenancePlanned}
                     </TableCell>
