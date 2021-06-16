@@ -56,7 +56,8 @@ const LineChart = () => {
         dataset2: [-15, -15, -25, -15, -25, -35],
       },
     };
-    setChartData(data[chartFilter]);
+    const dataset = data[chartFilter] || data['week']
+    setChartData(dataset);
   }, [chartFilter]);
 
   useEffect(() => {
@@ -81,6 +82,24 @@ const LineChart = () => {
             radius: 0,
           },
         },
+        scales: {
+          x: {
+              grid: {
+                  display: false,
+              },
+              ticks: {
+                  autoSkip: false,
+              },
+          },
+          y: {
+              grid: {
+                  display: false,
+              },
+              ticks: {
+                  autoSkip: false,
+              },
+          },
+      },
       },
       data: {
         labels: [1, 2, 3, 4, 5, 6, 7],

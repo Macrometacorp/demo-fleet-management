@@ -62,7 +62,7 @@ const Dashboard = () => {
         <Grid
           container
           direction="row"
-          style={{ paddingTop: "16px" }}
+          style={{ paddingTop: "32px" }}
           alignItems="flex-start"
         >
           <Grid item xs={6} className={classes.section}>

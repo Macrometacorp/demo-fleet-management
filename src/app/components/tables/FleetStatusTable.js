@@ -13,7 +13,7 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
 const useStyles = makeStyles({
   tableCell: {
-    padding: "3px 10px",
+    padding: "2.3px 10px",
     border: "1px solid",
   },
 });
