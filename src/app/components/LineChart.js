@@ -34,38 +34,36 @@ const useStyles = makeStyles({
 const LineChart = () => {
   const canvasRef = useRef(null);
   const classes = useStyles();
-  const [chartFilter, setChartFilter] = useState('week'); 
+  const [chartFilter, setChartFilter] = useState("week");
   const [chartData, setChartData] = useState({});
 
-  useEffect(()=>{
+  useEffect(() => {
     const data = {
-      'week':{
-        dataset1:[5, 10, 20, 10, 20, 30],
-        dataset2:[-5, -10, -20, -10, -20, -30]
+      week: {
+        dataset1: [5, 10, 20, 10, 20, 30],
+        dataset2: [-5, -10, -20, -10, -20, -30],
       },
-      'month':{
-        dataset1:[15, 15, 25, 15, 25, 35],
-        dataset2:[-15, -15, -25, -15, -25, -35]
+      month: {
+        dataset1: [15, 15, 25, 15, 25, 35],
+        dataset2: [-15, -15, -25, -15, -25, -35],
       },
-      'year':{
-        dataset1:[50, 100, 200, 100, 200, 300],
-        dataset2:[-50, -100, -200, -100, -200, -300]
+      year: {
+        dataset1: [50, 100, 200, 100, 200, 300],
+        dataset2: [-50, -100, -200, -100, -200, -300],
       },
-      'all':{
-        dataset1:[15, 15, 25, 15, 25, 35],
-        dataset2:[-15, -15, -25, -15, -25, -35]
+      all: {
+        dataset1: [15, 15, 25, 15, 25, 35],
+        dataset2: [-15, -15, -25, -15, -25, -35],
       },
-    }
+    };
     setChartData(data[chartFilter]);
-  },[chartFilter])
-
-
+  }, [chartFilter]);
 
   useEffect(() => {
     const ch = initChart(chartData);
     return () => {
       ch.destroy();
-    }
+    };
   }, [canvasRef.current, chartData]);
 
   const initChart = (data) => {
@@ -103,7 +101,7 @@ const LineChart = () => {
       },
     });
     return myChart;
-  }
+  };
 
   return (
     <>
@@ -119,7 +117,7 @@ const LineChart = () => {
         <div className={classes.chartCanvas}>
           <canvas ref={canvasRef} />
         </div>
-        <ChartFilters setChartFilter={setChartFilter}/>
+        <ChartFilters setChartFilter={setChartFilter} />
       </div>
     </>
   );
