@@ -1,4 +1,10 @@
-import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import {
+  Button,
+  Grid,
+  makeStyles,
+  CircularProgress,
+  Typography,
+} from "@material-ui/core";
 import React from "react";
 
 const useStyles = makeStyles({
@@ -23,7 +29,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Header = () => {
+const Header = ({ handleOnIntialize, isIntializeButtonDisabled }) => {
   const classes = useStyles();
 
   return (
@@ -37,10 +43,14 @@ const Header = () => {
         variant="contained"
         className={classes.intializeButton}
         onClick={() => {
-          console.log('Intialize')
+          handleOnIntialize();
         }}
       >
-        Intialize
+        {isIntializeButtonDisabled ? (
+          <CircularProgress size={24} />
+        ) : (
+          "Intialize"
+        )}
       </Button>
       <Button
         variant="contained"

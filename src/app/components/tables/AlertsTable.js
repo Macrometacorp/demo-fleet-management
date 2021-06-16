@@ -14,8 +14,9 @@ import Pagination from "@material-ui/lab/Pagination";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import AlertFilters from "./AlertFilters";
 import ModalComponent from "../ModalComponent";
-import { activeButtonClass, slicer } from "../../services/util";
-import moment from 'moment';
+import { activeButtonClass, slicer, formatDate } from "../../services/util";
+import { telematicList } from "../../services/streams";
+import moment from "moment";
 
 const useStyles = makeStyles({
   table: {
@@ -53,65 +54,49 @@ export default function AlertsTable() {
     setPage(value);
   };
 
+  const initTelematicList = async() => {
+    try {      
+      const results = await telematicList();
+      setOData(results)
+    } catch (error) {
+      console.error('falied to load maintenace centers', error.message)
+    }
+  }
+
   const handleBooking = (data) => {
-    let tdata = odata.map((item)=>{
-      if(item.id === data.id) {
-        item.maintenancePlanned = 'Yes'
-        const date = new Date(data.date)
+    let tdata = odata.map((item) => {
+      if (item._key === data._key) {
+        item.Maintenance_Planned = "Yes";
+        const date = new Date(data.date);
         let str = moment(date).format("D MMM YYYY");
         item.suggestedAction = (
           <>
-            Booked <br />
+            {/* Booked  */}
+            {/* <br /> */}
             <span>{str}</span>
           </>
-        )
+        );
       }
       return item;
-    })
+    });
     setOData(tdata);
-  }
-
-  let data = [
-    {
-      vehicleID: "PF16VBD",
-      alertDescription: "No Start",
-      dateLogged: "Just Now",
-      statusLevel: "Critical",
-      maintenancePlanned: "Yes",
-      suggestedAction: (
-        <>
-          Booked <br />
-          <span>25 Aug 2021</span>
-        </>
-      ),
-    },
-    {
-      vehicleID: "PF16VBD",
-      alertDescription: "No Start",
-      dateLogged: "Just Now",
-      statusLevel: "Attention",
-      maintenancePlanned: "No",
-    },
-  ];
+  };
 
   useEffect(() => {
-    const arr = Array.from({ length: 60 }, (i, j) =>
-      j % 2 === 0
-        ? { ...data[0], id: j + 1, vehicleID: `${data[0].vehicleID}_${j + 1}` }
-        : { ...data[1], id: j + 1, vehicleID: `${data[0].vehicleID}_${j + 1}` }
-    );
-    setOData(arr);
+    initTelematicList();
   }, []);
 
   useEffect(() => {
     let data = odata.filter((item) => {
       let filter = alertFilter.toLowerCase();
       if (filter === "all") return true;
-      if (filter === "booked")
-        return item.maintenancePlanned.toLowerCase() === "yes";
-      return item.statusLevel.toLowerCase() === filter;
+      if (filter === "booked"){
+        return item.Maintenance_Planned.toLowerCase() === "yes";
+      } else {
+        return item.Status_Level.toLowerCase() === filter;
+      }
     });
-    const tempData = slicer(data, 8);
+    const tempData = slicer(data, 11);
     setFData(tempData);
     setTData(tempData[(page - 1) | 0]);
     setPage(1);
@@ -124,9 +109,9 @@ export default function AlertsTable() {
   useEffect(() => {
     let stats = { all: odata.length, critical: 0, attention: 0, booked: 0 };
     odata.forEach((item) => {
-      if (item.maintenancePlanned.toLowerCase() === "yes") stats.booked += 1;
-      if (item.statusLevel.toLowerCase() === "critical") stats.critical += 1;
-      if (item.statusLevel.toLowerCase() === "attention") stats.attention += 1;
+      if (item.Maintenance_Planned.toLowerCase() === "yes") stats.booked += 1;
+      if (item.Status_Level.toLowerCase() === "critical") stats.critical += 1;
+      if (item.Status_Level.toLowerCase() === "attention") stats.attention += 1;
     });
     setAlertStats(stats);
   }, [odata]);
@@ -160,28 +145,31 @@ export default function AlertsTable() {
                     key={Math.random()}
                     style={i % 2 ? { background: "rgb(208 225 243)" } : {}}
                   >
-                    <TableCell align="center">{row.vehicleID}</TableCell>
-                    <TableCell align="center">{row.alertDescription}</TableCell>
-                    <TableCell align="center">{row.dateLogged}</TableCell>
+                    <TableCell align="center">{row.Asset}</TableCell>
+                    <TableCell align="center">{row.Fault}</TableCell>
+                    <TableCell align="center">{formatDate(row.Timestamp)}</TableCell>
                     <TableCell
                       align="center"
                       style={{
-                        color: `${row.statusLevel === "Critical" ? "red" : ""}`,
+                        color: `${
+                          row.Status_Level === "Critical" ? "red" : ""
+                        }`,
                       }}
                     >
-                      {row.statusLevel}
+                      {row.Status_Level}
                     </TableCell>
                     <TableCell align="center">
-                      {row.maintenancePlanned}
+                      {row.Maintenance_Planned}
                     </TableCell>
                     <TableCell align="center">
-                      {row.maintenancePlanned.toLowerCase() === "yes" ? (
+                      {row.Maintenance_Planned.toLowerCase() === "yes" ? (
                         row.suggestedAction
                       ) : (
                         <Button
                           variant="contained"
                           color="primary"
                           className={classes.activeActionButton}
+                          style={{padding:'0px'}}
                           onClick={() =>
                             setOpenModal({ status: true, data: row })
                           }
@@ -206,7 +194,7 @@ export default function AlertsTable() {
         <ModalComponent
           openModal={openModal}
           closeModal={() => setOpenModal({ status: false, data: { id: 0 } })}
-          handleSelect={(data)=>handleBooking(data)}
+          handleSelect={(data) => handleBooking(data)}
         />
       </div>
     </>

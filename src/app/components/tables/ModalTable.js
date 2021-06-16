@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Table,
@@ -11,33 +11,38 @@ import {
   Typography,
 } from "@material-ui/core";
 import DatePicker from "../DatePicker";
+import { maintenanceCenterList } from '../../services/streams'
 
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
   root: {
-    paddingTop: "1rem",
+    // paddingTop: "1rem",
   },
   pagination: {
     borderRadius: "none",
   },
 });
 
-export default function ModalTable({handleSelect}) {
+export default function ModalTable({handleSelect, alertData}) {
   const classes = useStyles();
   const [selectedDate, ] = useState("06/15/2021");
+  const [data, setData] = useState([]);
 
-  const tdata = {
-      maintenanceCenter: "Audi Service Center",
-      rating: "4.5/5.0",
-      location: "Liverpool",
-      estimatedTime: "1Day",
-      estimatedCost: "$100",
+  const initMaintenanceCenterList = async(city) => {
+    try {      
+      const results = await maintenanceCenterList(city);
+      setData(results)
+    } catch (error) {
+      console.error('falied to load maintenace centers', error.message)
     }
-  const data = Array.from({ length: 4 }, (i, j) =>
-       ({ ...tdata, id: j + 1 })
-  );
+  }
+
+  useEffect(()=>{
+    const { City } = alertData;
+    initMaintenanceCenterList(City);
+  },[])
 
   return (
     <>
@@ -48,7 +53,7 @@ export default function ModalTable({handleSelect}) {
               <TableRow>
                 <TableCell>Maintenance Center</TableCell>
                 <TableCell align="center">Rating</TableCell>
-                <TableCell align="center">Location</TableCell>
+                <TableCell align="center">City</TableCell>
                 <TableCell align="center">Estimated Time</TableCell>
                 <TableCell align="center">Estimated Cost</TableCell>
                 <TableCell align="center">Select</TableCell>
@@ -62,17 +67,17 @@ export default function ModalTable({handleSelect}) {
                     style={i % 2 ? { background: "rgb(208 225 243)" } : {}}
                   >
                     <TableCell align="center">
-                      {row.maintenanceCenter}
+                      {row.Name}
                     </TableCell>
-                    <TableCell align="center">{row.rating}</TableCell>
-                    <TableCell align="center">{row.location}</TableCell>
-                    <TableCell align="center">{row.estimatedTime}</TableCell>
-                    <TableCell align="center">{row.estimatedCost}</TableCell>
+                    <TableCell align="center">{row.Rating}/5.0</TableCell>
+                    <TableCell align="center">{row.City}</TableCell>
+                    <TableCell align="center">{row.Estimated_Time}  {row.Estimated_Time === 1? 'Day': 'Days'}</TableCell>
+                    <TableCell align="center">${row.Estimated_Cost}</TableCell>
                     <TableCell align="center">
                       <DatePicker
                         key={Math.random()}
                         onDateChange={(date) => {
-                          handleSelect({date, mantenanceCenterID: row.id})
+                          handleSelect({date, mantenanceCenterID: row._key})
                         }}
                         initialDate={selectedDate}
                       />

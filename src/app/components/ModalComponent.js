@@ -20,7 +20,7 @@ export default function ModalComponent(props) {
   const [open, setOpen] = React.useState(false);
   const [modalData, setModalData] = useState({
     status: false,
-    data: {}
+    data: {},
   });
 
   useEffect(() => {
@@ -36,9 +36,9 @@ export default function ModalComponent(props) {
   const handleSelectDate = (data) => {
     setOpen(false);
     closeModal();
-    handleSelect({...data, id:modalData.id})
+    handleSelect({ ...data, _key: modalData._key });
   };
-  const { vehicleID = 0 } = modalData;
+  const { Asset } = modalData;
   return (
     <React.Fragment>
       <Dialog
@@ -49,7 +49,7 @@ export default function ModalComponent(props) {
         aria-labelledby="max-width-dialog-title"
       >
         <DialogTitle id="max-width-dialog-title">
-          {vehicleID}
+          {Asset}
           <CancelPresentationIcon
             fontSize="large"
             onClick={handleClose}
@@ -58,7 +58,7 @@ export default function ModalComponent(props) {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <ModalTable handleSelect={(data)=>handleSelectDate(data)}/>
+            <ModalTable alertData={modalData} handleSelect={(data) => handleSelectDate(data)} />
           </DialogContentText>
         </DialogContent>
       </Dialog>

@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const activeButtonClass = {
     backgroundColor: "#4b81c3",
     width: "9rem",
@@ -17,4 +19,10 @@ export const activeButtonClass = {
         temparr.push(arr.slice(i,i+chunk));
     }
     return temparr;
+  }
+
+  export const formatDate = (date) => {
+    var a = moment(date);
+    var b = moment();
+    return a.from(b) // "a day ago"
   }

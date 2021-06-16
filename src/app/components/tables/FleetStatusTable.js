@@ -16,51 +16,69 @@ const useStyles = makeStyles({
     padding: "2.3px 10px",
     border: "1px solid",
   },
+  textRed: {
+    color: 'red',
+  },
+  textYellow: {
+    color: '#d0d00f',
+  },
+  textGreen: {
+    color: 'green',
+  },
+  textOrange: {
+    color: 'orange',
+  }
 });
-
-const data = [
-  {
-    col1: (
-      <>
-        Attention required <br /> (Next 7 days)
-      </>
-    ),
-  },
-  {
-    col1: (
-      <>
-        Critical Status <br /> (Next 7 days)
-      </>
-    ),
-  },
-  {
-    col1: (
-      <>
-        Fleet Health <br /> (Last 7 days)
-      </>
-    ),
-  },
-  {
-    col1: (
-      <>
-        Unplanned Maintenance <br /> (Last 7 days)
-      </>
-    ),
-  },
-  {
-    col1: (
-      <>
-        Planned Maintenance <br /> (Next 7 days)
-      </>
-    ),
-  },
-  {
-    col1: "Predicted Maintenance",
-  },
-];
 
 export default function FleetStatusTable() {
   const classes = useStyles();
+
+  const data = [
+    {
+      col1: (
+        <>
+          Attention required <br /> (Next 7 days)
+        </>
+      ),
+      col3: (<b className={classes.textRed}>1048</b>)
+    },
+    {
+      col1: (
+        <>
+          Critical Status <br /> (Next 7 days)
+        </>
+      ),
+      col3: (<b className={classes.textYellow}>374</b>)
+    },
+    {
+      col1: (
+        <>
+          Fleet Health <br /> (Last 7 days)
+        </>
+      ),
+      col3: (<b className={classes.textGreen}>89.04%</b>)
+    },
+    {
+      col1: (
+        <>
+          Unplanned Maintenance <br /> (Last 7 days)
+        </>
+      ),
+      col3: (<b className={classes.textRed}>171</b>)
+    },
+    {
+      col1: (
+        <>
+          Planned Maintenance <br /> (Next 7 days)
+        </>
+      ),
+      col3: (<b className={classes.textRed}>234</b>)
+    },
+    {
+      col1: "Predicted Maintenance",
+      col3: (<b className={classes.textOrange}>35.69%</b>)
+    },
+  ];
 
   return (
     <TableContainer component={Paper}>
@@ -80,7 +98,7 @@ export default function FleetStatusTable() {
                     <ArrowDropDownIcon style={{ fontSize: 50 }} />
                   )}
                 </TableCell>
-                <TableCell className={classes.tableCell}>1048</TableCell>
+                <TableCell className={classes.tableCell}>{row.col3}</TableCell>
               </TableRow>
             ))}
         </TableBody>

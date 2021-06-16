@@ -36,6 +36,7 @@ const DatePicker = (props) => {
       <Button
         variant="contained"
         color="primary"
+        style={{padding:'0px'}}
         className={classes.activeActionButton}
         onClick={() => window.$(datepickerContainer.current).datepicker("show")}
       >

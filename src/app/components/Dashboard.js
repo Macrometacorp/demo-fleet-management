@@ -6,13 +6,7 @@ import LineChart from "./LineChart";
 import FleetStatusTable from "./tables/FleetStatusTable";
 import InsightsTable from "./tables/InsightsTable";
 import AlertsTable from "./tables/AlertsTable";
-// import jsC8 from "jsc8";
-// import config from "../services/config";
-
-// const jsc8Client = new jsC8({
-//     url: config.gdnURL,
-//     apiKey: `${config.apiKey}`,
-// });
+import { intialize } from '../services/restql';
 
 const useStyles = makeStyles({
   root: {
@@ -36,6 +30,7 @@ const Dashboard = () => {
   const [isStreamStarted, setIsStreamStarted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isStopLoading, setIsStopLoading] = useState(false);
+  const [isIntializeLoading, setIsIntializeLoading] = useState(false);
   // const [isClearLoading, setIsClearLoading] = useState(false);
 
   //button callback for all the rest
@@ -47,11 +42,19 @@ const Dashboard = () => {
     // setIsStopLoading(true);
     // closeStreamAndWebSocket();
   };
+  const handleOnIntialize = async() => {
+    setIsIntializeLoading(true);
+    await intialize(setIsIntializeLoading);
+    console.log('successfully intialized!')
+  };
 
   return (
     <>
       <Container className={classes.root} maxWidth={false}>
-        <Header />
+        <Header
+          handleOnIntialize={handleOnIntialize}
+          isIntializeButtonDisabled={isIntializeLoading}
+        />
         <ButtonBar
           handleOnStart={handleOnStart}
           handleOnStop={handleOnStop}
