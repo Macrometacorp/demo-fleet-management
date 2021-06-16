@@ -14,7 +14,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import AlertFilters from "./AlertFilters";
 import ModalComponent from "../ModalComponent";
-import { activeButtonClass } from "../../services/util";
+import { activeButtonClass, slicer } from "../../services/util";
 
 const useStyles = makeStyles({
   table: {
@@ -38,10 +38,15 @@ const useStyles = makeStyles({
 export default function AlertsTable() {
   const classes = useStyles();
   const [openModal, setOpenModal] = useState({ status: false, data: 1 });
-  const [alertStats, setAlertStats] = useState({ all: 0, critical: 1, attention: 0, booked:0 });
+  const [alertStats, setAlertStats] = useState({ all: 0, critical: 0, attention: 0, booked:0 });
   const [ alertFilter, setAlterFilter ] = useState('all');
   const [fdata, setFData] = useState([]);
   const [odata, setOData] = useState([]);
+  const [tdata, setTData] = useState([]);
+  const [page, setPage] = React.useState(1);
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
 
   let data = [
     {
@@ -77,7 +82,8 @@ export default function AlertsTable() {
   ];
 
   useEffect(()=>{
-    setOData([...data, ...data, ...data, ...data])
+    const arr = Array.from({length:60}, (i, j)=>(j % 2 === 0 ? data[0] : data[1]));
+    setOData(arr)
   },[])
 
   useEffect(() => {
@@ -87,8 +93,16 @@ export default function AlertsTable() {
       if(filter === 'booked') return item.maintenancePlanned.toLowerCase() === 'yes';
       return item.statusLevel.toLowerCase() === filter;
     });
-    setFData(data)
+    // setFData(data)
+    const tempData = slicer(data, 8);
+    setFData(tempData);
+    setTData(tempData[page-1 | 0]);
+    setPage(1);
   }, [alertFilter, odata]);
+
+  useEffect(()=>{
+    setTData(fdata[page-1])
+  },[page])
 
   useEffect(()=>{
     let stats = {all:odata.length,critical:0,attention:0,booked:0}
@@ -118,14 +132,13 @@ export default function AlertsTable() {
                 <TableCell align="center">Status level</TableCell>
                 <TableCell align="center">Maintenance &nbsp; Planned</TableCell>
                 <TableCell align="center" style={{ width: "5rem" }}>
-                  {" "}
                   Action
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {fdata &&
-                fdata.map((row, i) => (
+              {tdata &&
+                tdata.map((row, i) => (
                   <TableRow
                     key={Math.random()}
                     style={i % 2 ? { background: "rgb(208 225 243)" } : {}}
@@ -144,9 +157,11 @@ export default function AlertsTable() {
           </Table>
           <Pagination
             className={classes.pagination}
-            count={5}
+            count={fdata.length}
             showFirstButton
             showLastButton
+            page={page} 
+            onChange={handleChange}
           />
         </TableContainer>
         <ModalComponent

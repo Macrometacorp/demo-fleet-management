@@ -10,3 +10,11 @@ export const activeButtonClass = {
       color: "#ffffff",
     },
   }
+
+  export const slicer = (arr, size) => {
+    var i,j,temparr = [],chunk = size;
+    for (i=0,j=arr.length; i<j; i+=chunk) {
+        temparr.push(arr.slice(i,i+chunk));
+    }
+    return temparr;
+  }
