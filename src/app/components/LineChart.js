@@ -1,5 +1,5 @@
 import Chart from "chart.js/auto";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import ChartFilters from "./ChartFilters";
@@ -34,25 +34,42 @@ const useStyles = makeStyles({
 const LineChart = () => {
   const canvasRef = useRef(null);
   const classes = useStyles();
+  const [chartFilter, setChartFilter] = useState('week'); 
+  const [chartData, setChartData] = useState({});
 
-  let chartData;
-  let myChart;
-
-  const updateChart = () => {
-    myChart.data.labels = chartData.data.map((d) => d.time);
-    myChart.data.datasets[0].data = chartData.data.map((d) => d.value);
-    myChart.update();
-  };
-
-  useEffect(() => {
-    if (canvasRef.current && myChart && myChart.data.length) {
-      updateChart();
+  useEffect(()=>{
+    const data = {
+      'week':{
+        dataset1:[5, 10, 20, 10, 20, 30],
+        dataset2:[-5, -10, -20, -10, -20, -30]
+      },
+      'month':{
+        dataset1:[15, 15, 25, 15, 25, 35],
+        dataset2:[-15, -15, -25, -15, -25, -35]
+      },
+      'year':{
+        dataset1:[50, 100, 200, 100, 200, 300],
+        dataset2:[-50, -100, -200, -100, -200, -300]
+      },
+      'all':{
+        dataset1:[15, 15, 25, 15, 25, 35],
+        dataset2:[-15, -15, -25, -15, -25, -35]
+      },
     }
-  }, [canvasRef.current]);
+    setChartData(data[chartFilter]);
+  },[chartFilter])
+
+
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    myChart = new Chart(canvasRef.current, {
+    const ch = initChart(chartData);
+    return () => {
+      ch.destroy();
+    }
+  }, [canvasRef.current, chartData]);
+
+  const initChart = (data) => {
+    const myChart = new Chart(canvasRef.current, {
       type: "line",
       options: {
         maintainAspectRatio: false,
@@ -71,13 +88,13 @@ const LineChart = () => {
         labels: [1, 2, 3, 4, 5, 6, 7],
         datasets: [
           {
-            data: [5, 10, 20, 10, 20, 30],
+            data: data.dataset1,
             backgroundColor: "red",
             borderColor: "red",
             borderWidth: 1,
           },
           {
-            data: [-5, -10, -20, -10, -20, -30],
+            data: data.dataset2,
             backgroundColor: "yellow",
             borderColor: "yellow",
             borderWidth: 1,
@@ -85,10 +102,8 @@ const LineChart = () => {
         ],
       },
     });
-    return () => {
-      myChart.destroy();
-    };
-  }, []);
+    return myChart;
+  }
 
   return (
     <>
@@ -104,7 +119,7 @@ const LineChart = () => {
         <div className={classes.chartCanvas}>
           <canvas ref={canvasRef} />
         </div>
-        <ChartFilters />
+        <ChartFilters setChartFilter={setChartFilter}/>
       </div>
     </>
   );

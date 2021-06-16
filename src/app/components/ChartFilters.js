@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect} from "react";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core";
 
@@ -11,18 +11,19 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ChartFilters() {
-  const [alignment, setAlignment] = React.useState("week");
+export default function ChartFilters({setChartFilter}) {
+  const [selected, setSelected] = useState("week");
   const classes = useStyles();
-  const handleAlignment = (event, newAlignment) => {
-    setAlignment(newAlignment);
-  };
+
+  useEffect(()=>{
+    setChartFilter(selected);
+  },[selected])
 
   return (
     <ToggleButtonGroup
-      value={alignment}
+      value={selected}
       exclusive
-      onChange={handleAlignment}
+      onChange={(e,value)=>setSelected(value)}
       aria-label="text alignment"
       style={{ margin: "15px 0px" }}
     >
