@@ -14,9 +14,14 @@ import Pagination from "@material-ui/lab/Pagination";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import AlertFilters from "./AlertFilters";
 import ModalComponent from "../ModalComponent";
-import { activeButtonClass, slicer, formatDate } from "../../services/util";
-import { telematicList } from "../../services/streams";
-import moment from "moment";
+import {
+  activeButtonClass,
+  slicer,
+  formatDate,
+  printDate,
+  getRand,
+} from "../../services/util";
+import { telematicList, assetDetails, processBooking } from "../../services/streams";
 
 const useStyles = makeStyles({
   table: {
@@ -54,32 +59,57 @@ export default function AlertsTable() {
     setPage(value);
   };
 
-  const initTelematicList = async() => {
-    try {      
+  const initTelematicList = async () => {
+    try {
       const results = await telematicList();
-      setOData(results)
+      setOData(results);
     } catch (error) {
-      console.error('falied to load maintenace centers', error.message)
+      console.error("falied to load maintenace centers", error.message);
     }
-  }
+  };
+
+  const initAssetDetails = async (data) => {
+    try {
+      const { Asset, Fault } = data.data;
+      const { date, maintenaceData } = data;
+      const [asetDetail] = await assetDetails(Asset);
+      const { Driver, Vehicle_Model } = asetDetail;
+      const { Estimated_Cost: Work_Cost } = maintenaceData;
+      const tdate = new Date(date);
+      const payload = {
+        Asset,
+        Booked_In: tdate.toISOString(),
+        Invoice_Number: getRand(),
+        Cost_Center: getRand(),
+        Vehicle_Model,
+        Driver,
+        Work_Description: Fault,
+        Work_Cost,
+      };
+      await processBooking(payload);
+      console.log("successfully booking processed!");
+    } catch (error) {
+      console.error('Failed to book maintenance', error.message);
+    }
+  };
 
   const handleBooking = (data) => {
     let tdata = odata.map((item) => {
       if (item._key === data._key) {
         item.Maintenance_Planned = "Yes";
         const date = new Date(data.date);
-        let str = moment(date).format("D MMM YYYY");
-        item.suggestedAction = (
+        item.Booked_In = (
           <>
             {/* Booked  */}
             {/* <br /> */}
-            <span>{str}</span>
+            <span>{printDate(date)}</span>
           </>
         );
       }
       return item;
     });
     setOData(tdata);
+    initAssetDetails(data);
   };
 
   useEffect(() => {
@@ -90,13 +120,13 @@ export default function AlertsTable() {
     let data = odata.filter((item) => {
       let filter = alertFilter.toLowerCase();
       if (filter === "all") return true;
-      if (filter === "booked"){
+      if (filter === "booked") {
         return item.Maintenance_Planned.toLowerCase() === "yes";
       } else {
         return item.Status_Level.toLowerCase() === filter;
       }
     });
-    const tempData = slicer(data, 11);
+    const tempData = slicer(data, 10);
     setFData(tempData);
     setTData(tempData[(page - 1) | 0]);
     setPage(1);
@@ -147,7 +177,9 @@ export default function AlertsTable() {
                   >
                     <TableCell align="center">{row.Asset}</TableCell>
                     <TableCell align="center">{row.Fault}</TableCell>
-                    <TableCell align="center">{formatDate(row.Timestamp)}</TableCell>
+                    <TableCell align="center">
+                      {formatDate(row.Timestamp)}
+                    </TableCell>
                     <TableCell
                       align="center"
                       style={{
@@ -163,13 +195,13 @@ export default function AlertsTable() {
                     </TableCell>
                     <TableCell align="center">
                       {row.Maintenance_Planned.toLowerCase() === "yes" ? (
-                        row.suggestedAction
+                        row.Booked_In
                       ) : (
                         <Button
                           variant="contained"
                           color="primary"
                           className={classes.activeActionButton}
-                          style={{padding:'0px'}}
+                          style={{ padding: "0px" }}
                           onClick={() =>
                             setOpenModal({ status: true, data: row })
                           }

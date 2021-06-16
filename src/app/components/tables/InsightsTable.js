@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   makeStyles,
   Table,
@@ -8,11 +8,10 @@ import {
   TableRow,
   Paper,
 } from "@material-ui/core";
+import { insightList } from "../../services/streams";
+import useInterval from "../../hooks/useInterval";
 
 const useStyles = makeStyles({
-  table: {
-    // minWidth: 200,
-  },
   tableCell: {
     padding: "0.7rem",
     border: "1px solid",
@@ -24,42 +23,17 @@ const useStyles = makeStyles({
   },
 });
 
-const data = [
-  {
-    col1: "Vechicle with most frequent issue	",
-    col2: "PF16VBD",
-    col3: "investigate",
-  },
-  {
-    col1: "Most Common Alert",
-    col2: "Breaks",
-    col3: "investigate",
-  },
-  {
-    col1: "Average Driver Behaviour",
-    col2: "Good",
-    col3: "investigate",
-  },
-  {
-    col1: "Total Cost of Unplanned Maintenance",
-    col2: "£4,230",
-    col3: "investigate",
-  },
-  {
-    col1: "Area with most critical Alerts",
-    col2: "Manchester",
-    col3: "investigate",
-  },
-  {
-    col1: "Least Cost Effective Vehicle",
-    col2: "Ford Transit",
-    col3: "investigate",
-  },
-];
-
 export default function InsightsTable() {
   const classes = useStyles();
-
+  const [data, setData] = useState([]);
+  const initInsightList = async () => {
+    const result = await insightList();
+    setData(result);
+  };
+  useEffect(() => {
+    initInsightList();
+  }, []);
+  useInterval(initInsightList, 3000);
   return (
     <>
       <div style={{ display: "flex", marginBottom: "10px" }}>
@@ -82,7 +56,7 @@ export default function InsightsTable() {
                     {row.col2}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {row.col3}
+                    investigate
                   </TableCell>
                 </TableRow>
               ))}

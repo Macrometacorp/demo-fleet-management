@@ -77,7 +77,7 @@ export default function ModalTable({handleSelect, alertData}) {
                       <DatePicker
                         key={Math.random()}
                         onDateChange={(date) => {
-                          handleSelect({date, mantenanceCenterID: row._key})
+                          handleSelect({date, maintenaceData:row})
                         }}
                         initialDate={selectedDate}
                       />

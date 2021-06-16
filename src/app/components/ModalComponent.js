@@ -36,7 +36,7 @@ export default function ModalComponent(props) {
   const handleSelectDate = (data) => {
     setOpen(false);
     closeModal();
-    handleSelect({ ...data, _key: modalData._key });
+    handleSelect({ ...data, _key: modalData._key, data: modalData });
   };
   const { Asset } = modalData;
   return (

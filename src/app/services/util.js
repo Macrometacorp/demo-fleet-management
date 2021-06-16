@@ -26,3 +26,11 @@ export const activeButtonClass = {
     var b = moment();
     return a.from(b) // "a day ago"
   }
+
+  export const printDate = (date) => {
+    if(date) return moment(date).format("D MMM YYYY");
+    return;
+  }
+
+  export const getRand = () => Math.floor(1000000 + Math.random() * 900000)
+  
