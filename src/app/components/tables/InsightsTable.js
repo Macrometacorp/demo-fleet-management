@@ -24,10 +24,10 @@ const useStyles = makeStyles({
 });
 
 const tdata = {
-  Area_With_Most_Alerts: "Vechicle with most frequent issue",
+  Vehicle_With_Most_Frequent_Issues: "Vechicle with most frequent issue",
   Most_Common_Alert: "Most Common Alert",
   Total_Cost_Of_Unplanned_Maintenance: "Total Cost of Unplanned Maintenance",
-  Vehicle_With_Most_Frequent_Issues: "Area with most Alerts",
+  Area_With_Most_Alerts: "Area with most Alerts",
   Least_Cost_Effective_Vehicle: "Least Cost Effective Vehicle",
 };
 
