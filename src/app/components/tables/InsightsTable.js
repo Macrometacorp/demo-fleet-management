@@ -33,7 +33,7 @@ const tdata = {
 
 export default function InsightsTable() {
   const classes = useStyles();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const initInsightList = async () => {
     const result = await insightList();
     setData(result);
