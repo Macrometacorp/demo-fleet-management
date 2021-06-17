@@ -23,6 +23,14 @@ const useStyles = makeStyles({
   },
 });
 
+const tdata = {
+  Area_With_Most_Alerts: "Vechicle with most frequent issue",
+  Most_Common_Alert: "Most Common Alert",
+  Total_Cost_Of_Unplanned_Maintenance: "Total Cost of Unplanned Maintenance",
+  Vehicle_With_Most_Frequent_Issues: "Area with most Alerts",
+  Least_Cost_Effective_Vehicle: "Least Cost Effective Vehicle",
+};
+
 export default function InsightsTable() {
   const classes = useStyles();
   const [data, setData] = useState([]);
@@ -46,14 +54,14 @@ export default function InsightsTable() {
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="custom pagination table">
           <TableBody>
-            {data &&
-              data.map((row) => (
+            {Object.keys(tdata) &&
+              Object.keys(tdata).map((key) => (
                 <TableRow key={Math.random()}>
                   <TableCell className={classes.tableCell}>
-                    {row.col1}
+                    {tdata[key]}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {row.col2}
+                    {data.hasOwnProperty(key) && data[key]}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     investigate
