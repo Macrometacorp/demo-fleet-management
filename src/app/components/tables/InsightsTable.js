@@ -35,8 +35,12 @@ export default function InsightsTable() {
   const classes = useStyles();
   const [data, setData] = useState({});
   const initInsightList = async () => {
-    const result = await insightList();
-    setData(result);
+    try {      
+      const result = await insightList();
+      setData(result);
+    } catch (error) {
+      console.error('falied to load the insigths', error.message);
+    }
   };
   useEffect(() => {
     initInsightList();

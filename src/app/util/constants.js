@@ -13,6 +13,7 @@ const LOAD_TELEMATICS = "load_telematics"
 const LOAD_AREA_ISSIE_COUNTS = "load_area_issue_counts"
 const LOAD_ISSSUE_COUNTS = "load_issue_counts"
 const LOAD_VEHICLE_ISSSUE_COUNTS = "load_vehicle_issue_counts"
+const LOAD_FLEET_STATS_COUNTS = "load_fleet_stats_counts"
 
 export const ON_READY = "on_ready"
 
@@ -21,6 +22,7 @@ export const GET_TOP5_MAINTENANCE_CENTERS_FOR_CITY = "get_top5_maintenance_cente
 export const GET_ASSET_DETAILS = "get_asset_details"
 export const GET_TELEMATIC_INSIGHTS = "get_telematic_insights"
 export const INSERT_UNPLANNED_MAINTENANCE = "insert_unplanned_maintenance"
+export const ENRICHTED_TELEMATICS =  "enriched-telematics"
 
 export const COLLECTIONS = {
   MAINTENANCE_CENTER,
@@ -34,7 +36,8 @@ export const LOAD_DATASETS = [
   LOAD_TELEMATICS,
   LOAD_AREA_ISSIE_COUNTS,
   LOAD_ISSSUE_COUNTS,
-  LOAD_VEHICLE_ISSSUE_COUNTS
+  LOAD_VEHICLE_ISSSUE_COUNTS,
+  LOAD_FLEET_STATS_COUNTS
 ]
 
 export const TRUNCATE_DATASETS = [
@@ -53,3 +56,10 @@ export const RESTQL = {
   GET_TOP5_MAINTENANCE_CENTERS_FOR_CITY,
   GET_ASSET_DETAILS
 }
+
+export const STREAMS =  [
+  "insights-worker",
+  "fleet-stats-worker",
+  "telematics-worker",
+  "telematics-simulator",
+]

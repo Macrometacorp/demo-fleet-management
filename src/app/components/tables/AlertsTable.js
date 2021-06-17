@@ -41,7 +41,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function AlertsTable() {
+export default function AlertsTable({alertsData}) {
   const classes = useStyles();
   const [openModal, setOpenModal] = useState({ status: false, data: {} });
   const [alertStats, setAlertStats] = useState({
@@ -98,13 +98,7 @@ export default function AlertsTable() {
       if (item._key === data._key) {
         item.Maintenance_Planned = "Yes";
         const date = new Date(data.date);
-        item.Booked_In = (
-          <>
-            {/* Booked  */}
-            {/* <br /> */}
-            <span>{printDate(date)}</span>
-          </>
-        );
+        item.Booked_In = date.toISOString();
       }
       return item;
     });
@@ -126,7 +120,7 @@ export default function AlertsTable() {
         return item.Status_Level.toLowerCase() === filter;
       }
     });
-    const tempData = slicer(data, 10);
+    const tempData = slicer(data, 8);
     setFData(tempData);
     setTData(tempData[(page - 1) | 0]);
     setPage(1);
@@ -135,6 +129,14 @@ export default function AlertsTable() {
   useEffect(() => {
     setTData(fdata[page - 1]);
   }, [page]);
+
+  useEffect(()=>{
+    const [ data = {} ] = alertsData;
+    if(data && Object.keys(data).length > 0){
+      data._key = getRand();
+      setOData([data, ...odata]);
+    }
+  },[alertsData])
 
   useEffect(() => {
     let stats = { all: odata.length, critical: 0, attention: 0, booked: 0 };
@@ -195,7 +197,11 @@ export default function AlertsTable() {
                     </TableCell>
                     <TableCell align="center">
                       {row.Maintenance_Planned.toLowerCase() === "yes" ? (
-                        row.Booked_In
+                        <>
+                        Booked
+                        <br/>
+                        {printDate(row.Booked_In)}
+                        </>
                       ) : (
                         <Button
                           variant="contained"

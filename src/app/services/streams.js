@@ -6,6 +6,7 @@ import {
   GET_TELEMATIC_INSIGHTS,
   GET_ASSET_DETAILS,
   INSERT_UNPLANNED_MAINTENANCE,
+  STREAMS,
 } from "../util/constants";
 
 const jsc8Client = new jsC8({
@@ -22,6 +23,7 @@ export const maintenanceCenterList = async (city = "London") => {
     return result;
   } catch (error) {
     console.error(error);
+    throw error
   }
 };
 
@@ -31,6 +33,7 @@ export const telematicList = async () => {
     return result;
   } catch (error) {
     console.error(error);
+    throw error
   }
 };
 
@@ -40,6 +43,7 @@ export const assetDetails = async (Asset) => {
     return result;
   } catch (error) {
     console.error(error);
+    throw error
   }
 };
 
@@ -49,6 +53,7 @@ export const processBooking = async (payload) => {
     return result;
   } catch (error) {
     console.error(error);
+    throw error
   }
 };
 
@@ -59,5 +64,40 @@ export const insightList = async () => {
     return data;
   } catch (error) {
     console.error(error);
+    throw error
   }
+};
+
+
+export const startStopStream = async (start = false) => {
+  try {
+  let steamsArr = STREAMS;
+  if(start === false){
+    steamsArr.reverse()
+  }
+  for (const element of steamsArr) {
+      await jsc8Client.activateStreamApp(element, start);
+    }
+    return true;
+  } catch (error) {
+    console.error("Failed start ot stop strams", error.message);
+    return false;
+  }
+};
+
+export const createStreamReader = async (streamName, filters) => {
+  let response;
+  try {
+      response = await jsc8Client.createStreamReader(
+          streamName,
+          `${streamName}-${Math.round(Math.random() * 1000)}`,
+          false,
+          false,
+          config.gdnURL.replace("https://", ""),
+          { filters }
+      );
+  } catch (error) {
+      console.error(error);
+  }
+  return response;
 };

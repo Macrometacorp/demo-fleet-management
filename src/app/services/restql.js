@@ -1,6 +1,7 @@
 import jsC8 from "jsc8";
 import config from "../services/config";
 import { TRUNCATE_DATASETS, LOAD_DATASETS, ON_READY } from "../util/constants";
+import { startStopStream  } from "./streams";
 
 const jsc8Client = new jsC8({
   url: config.gdnURL,
@@ -9,6 +10,7 @@ const jsc8Client = new jsC8({
 
 export const intialize = async (callback) => {
   try {
+    await startStopStream();
     await truncateCollections();
     await loadDataCollections();
     await onReady();
@@ -36,7 +38,8 @@ const loadDataCollections = async () => {
       (collection) => jsc8Client.executeRestql(collection)
     );
     await Promise.all(promises);
-    const tpromises = LOAD_DATASETS.slice(2).map(
+    await jsc8Client.executeRestql(LOAD_DATASETS[2]);
+    const tpromises = LOAD_DATASETS.slice(3).map(
       (collection) => jsc8Client.executeRestql(collection)
     );
     await Promise.all(tpromises);

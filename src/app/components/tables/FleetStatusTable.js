@@ -74,10 +74,6 @@ export default function FleetStatusTable() {
       ),
       col3: (<b className={classes.textRed}>234</b>)
     },
-    {
-      col1: "Predicted Maintenance",
-      col3: (<b className={classes.textOrange}>35.69%</b>)
-    },
   ];
 
   return (
