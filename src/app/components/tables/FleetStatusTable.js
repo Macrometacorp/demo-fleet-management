@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   makeStyles,
   Table,
@@ -10,91 +10,94 @@ import {
 } from "@material-ui/core";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import { fleetStats } from "../../services/streams";
+import useInterval from "../../hooks/useInterval";
 
 const useStyles = makeStyles({
   tableCell: {
     padding: "1.9px 10px",
     border: "1px solid",
   },
-  textRed: {
-    color: 'red',
-  },
-  textYellow: {
-    color: '#d0d00f',
-  },
-  textGreen: {
-    color: 'green',
-  },
-  textOrange: {
-    color: 'orange',
-  }
 });
 
 export default function FleetStatusTable() {
   const classes = useStyles();
+  const [data, setData] = useState({});
+  const initFleetStats = async () => {
+    try {
+      const result = await fleetStats();
+      setData(result);
+    } catch (error) {
+      console.error("falied to load the insigths", error.message);
+    }
+  };
+  useEffect(() => {
+    initFleetStats();
+  }, []);
 
-  const data = [
-    {
-      col1: (
-        <>
-          Attention required <br /> (Next 7 days)
-        </>
-      ),
-      col3: (<b className={classes.textRed}>1048</b>)
-    },
-    {
-      col1: (
-        <>
-          Critical Status <br /> (Next 7 days)
-        </>
-      ),
-      col3: (<b className={classes.textYellow}>374</b>)
-    },
-    {
-      col1: (
-        <>
-          Fleet Health <br /> (Last 7 days)
-        </>
-      ),
-      col3: (<b className={classes.textGreen}>89.04%</b>)
-    },
-    {
-      col1: (
-        <>
-          Unplanned Maintenance <br /> (Last 7 days)
-        </>
-      ),
-      col3: (<b className={classes.textRed}>171</b>)
-    },
-    {
-      col1: (
-        <>
-          Planned Maintenance <br /> (Next 7 days)
-        </>
-      ),
-      col3: (<b className={classes.textRed}>234</b>)
-    },
-  ];
+  useInterval(initFleetStats, 3000);
+
+  const tdata = {
+    Attention_Required: (
+      <>
+        Attention required <br /> (Next 7 days)
+      </>
+    ),
+    Critical_Status: (
+      <>
+        Critical Status <br /> (Next 7 days)
+      </>
+    ),
+    Fleet_Health: (
+      <>
+        Fleet Health <br /> (Last 7 days)
+      </>
+    ),
+    Unplanned_Maintenance: (
+      <>
+        Unplanned Maintenance <br /> (Last 7 days)
+      </>
+    ),
+    Planned_Maintenance: (
+      <>
+        Planned Maintenance <br /> (Next 7 days)
+      </>
+    ),
+  };
 
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="custom pagination table">
         <TableBody>
-          {data &&
-            data.map((row, i) => (
+          {Object.keys(tdata) &&
+            Object.keys(tdata).map((key, i) => (
               <TableRow key={Math.random()}>
-                <TableCell className={classes.tableCell}>{row.col1}</TableCell>
+                <TableCell className={classes.tableCell}>
+                  {tdata[key]}
+                </TableCell>
                 <TableCell
                   className={classes.tableCell}
                   style={{ width: "50px" }}
                 >
-                  {i % 2 === 0 ? (
+                  {data && data[key] && data[key].arrow === "Up" ? (
                     <ArrowDropUpIcon style={{ fontSize: 50 }} />
                   ) : (
                     <ArrowDropDownIcon style={{ fontSize: 50 }} />
                   )}
                 </TableCell>
-                <TableCell className={classes.tableCell}>{row.col3}</TableCell>
+                <TableCell className={classes.tableCell}>
+                  <b
+                    style={{
+                      color: `${
+                        data && data[key] && data[key].arrow === "Up"
+                          ? "green"
+                          : "red"
+                      }`,
+                    }}
+                  >
+                    {data && data[key] && data[key][key]}
+                  </b>
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>

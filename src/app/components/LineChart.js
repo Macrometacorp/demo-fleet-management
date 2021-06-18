@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import ChartFilters from "./ChartFilters";
+import { fleetChartData } from "../services/streams";
 
 // LineChart
 
@@ -37,27 +38,13 @@ const LineChart = () => {
   const [chartFilter, setChartFilter] = useState("week");
   const [chartData, setChartData] = useState({});
 
+  const initFleetChartData = async(filter) => {
+    const result = await fleetChartData(filter);
+    setChartData(result);
+  }
+
   useEffect(() => {
-    const data = {
-      week: {
-        dataset1: [5, 10, 20, 10, 20, 30],
-        dataset2: [-5, -10, -20, -10, -20, -30],
-      },
-      month: {
-        dataset1: [15, 15, 25, 15, 25, 35],
-        dataset2: [-15, -15, -25, -15, -25, -35],
-      },
-      year: {
-        dataset1: [50, 100, 200, 100, 200, 300],
-        dataset2: [-50, -100, -200, -100, -200, -300],
-      },
-      all: {
-        dataset1: [15, 15, 25, 15, 25, 35],
-        dataset2: [-15, -15, -25, -15, -25, -35],
-      },
-    };
-    const dataset = data[chartFilter] || data['week']
-    setChartData(dataset);
+    initFleetChartData(chartFilter)
   }, [chartFilter]);
 
   useEffect(() => {
@@ -106,15 +93,13 @@ const LineChart = () => {
         datasets: [
           {
             data: data.dataset1,
-            backgroundColor: "red",
             borderColor: "red",
-            borderWidth: 1,
+            borderWidth: 2,
           },
           {
             data: data.dataset2,
-            backgroundColor: "yellow",
-            borderColor: "yellow",
-            borderWidth: 1,
+            borderColor: "#d0d00f",
+            borderWidth: 2,
           },
         ],
       },

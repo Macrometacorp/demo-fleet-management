@@ -21,6 +21,7 @@ export const GET_TELEMATICS_30_DAYS = "get_telematics_30_days"
 export const GET_TOP5_MAINTENANCE_CENTERS_FOR_CITY = "get_top5_maintenance_centers_for_city"
 export const GET_ASSET_DETAILS = "get_asset_details"
 export const GET_TELEMATIC_INSIGHTS = "get_telematic_insights"
+export const GET_FLEET_STATS = "get_fleet_stats"
 export const INSERT_UNPLANNED_MAINTENANCE = "insert_unplanned_maintenance"
 export const ENRICHTED_TELEMATICS =  "enriched-telematics"
 

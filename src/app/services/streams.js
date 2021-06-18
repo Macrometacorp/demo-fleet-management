@@ -7,6 +7,7 @@ import {
   GET_ASSET_DETAILS,
   INSERT_UNPLANNED_MAINTENANCE,
   STREAMS,
+  GET_FLEET_STATS,
 } from "../util/constants";
 
 const jsc8Client = new jsC8({
@@ -62,6 +63,44 @@ export const insightList = async () => {
     const { result } = await jsc8Client.executeRestql(GET_TELEMATIC_INSIGHTS);
     const [data] = result;
     return data;
+  } catch (error) {
+    console.error(error);
+    throw error
+  }
+};
+
+export const fleetStats = async () => {
+  try {
+    const { result } = await jsc8Client.executeRestql(GET_FLEET_STATS);
+    const [data] = result;
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error
+  }
+};
+
+export const fleetChartData = async (filter = 'week') => {
+  try {
+    const data = {
+      week: {
+        dataset1: [5, 10, 20, 10, 20, 30],
+        dataset2: [-5, -10, -20, -10, -20, -30],
+      },
+      month: {
+        dataset1: [15, 15, 25, 15, 25, 35],
+        dataset2: [-15, -15, -25, -15, -25, -35],
+      },
+      year: {
+        dataset1: [50, 100, 200, 100, 200, 300],
+        dataset2: [-50, -100, -200, -100, -200, -300],
+      },
+      all: {
+        dataset1: [15, 15, 25, 15, 25, 35],
+        dataset2: [-15, -15, -25, -15, -25, -35],
+      },
+    };
+    return data[filter]
   } catch (error) {
     console.error(error);
     throw error
