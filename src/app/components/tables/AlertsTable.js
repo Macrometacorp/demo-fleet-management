@@ -134,6 +134,9 @@ export default function AlertsTable({alertsData}) {
     const [ data = {} ] = alertsData;
     if(data && Object.keys(data).length > 0){
       data._key = getRand();
+      if(odata.length === 0) {
+        initTelematicList();
+      }
       setOData([data, ...odata]);
     }
   },[alertsData])
