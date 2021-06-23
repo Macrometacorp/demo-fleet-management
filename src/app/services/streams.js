@@ -7,7 +7,7 @@ import {
   GET_TELEMATIC_INSIGHTS,
   GET_ASSET_DETAILS,
   INSERT_UNPLANNED_MAINTENANCE,
-  STREAMS,
+  STREAM_WORKERS,
   GET_FLEET_STATS,
   GET_FLEET_STATS_CHART_DATA,
 } from "../util/constants";
@@ -128,7 +128,7 @@ export const fleetChartData = async (filter = 'week') => {
 
 export const startStopStream = async (start = false) => {
   try {
-  let steamsArr = STREAMS;
+  let steamsArr = STREAM_WORKERS;
   if(start === false){
     steamsArr.reverse()
   }

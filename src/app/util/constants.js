@@ -59,7 +59,7 @@ export const RESTQL = {
   GET_ASSET_DETAILS
 }
 
-export const STREAMS =  [
+export const STREAM_WORKERS =  [
   "insights-worker",
   "fleet-stats-worker",
   "telematics-worker",
