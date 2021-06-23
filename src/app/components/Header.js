@@ -38,6 +38,9 @@ const Header = ({ handleOnIntialize, isIntializeButtonDisabled }) => {
         <Typography variant="h4" align="center" className={classes.header}>
           Macrometa - Realtime Fleet Management
         </Typography>
+        <Typography variant="subtitle1" align="center" className={classes.header}>
+                    Simple, secure and scalable realtime fleet management
+          </Typography>
       </Grid>
       <Button
         variant="contained"

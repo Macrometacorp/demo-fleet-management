@@ -97,11 +97,13 @@ const LineChart = () => {
         labels: data.label,
         datasets: [
           {
+            label: " Critical",
             data: data.dataset1,
             borderColor: "red",
             borderWidth: 2,
           },
           {
+            label: " Attention",
             data: data.dataset2,
             borderColor: "#d0d00f",
             borderWidth: 2,

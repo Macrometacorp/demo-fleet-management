@@ -17,8 +17,8 @@ const jsc8Client = new jsC8({
   apiKey: `${config.apiKey}`,
 });
 
-const getDataset1 = R.pluck('Attention_Required');
-const getDataset2 = R.pluck('Critical_Status');
+const getDataset1 = R.pluck('Critical_Status');
+const getDataset2 = R.pluck('Attention_Required');
 
 
 export const maintenanceCenterList = async (city = "London") => {
