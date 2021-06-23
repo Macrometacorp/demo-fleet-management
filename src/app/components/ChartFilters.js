@@ -36,9 +36,9 @@ export default function ChartFilters({ setChartFilter }) {
       <ToggleButton value="year" className={classes.actionButton}>
         Year
       </ToggleButton>
-      <ToggleButton value="all" className={classes.actionButton}>
+      {/* <ToggleButton value="all" className={classes.actionButton}>
         All
-      </ToggleButton>
+      </ToggleButton> */}
     </ToggleButtonGroup>
   );
 }

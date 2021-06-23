@@ -60,8 +60,6 @@ const LineChart = () => {
   }, [canvasRef.current, chartData]);
 
   const initChart = (data) => {
-    const size = (data.dataset1 && data.dataset1.length) || 0
-    const labelLength = Array.from({length: size},(i,j)=>j);
     const myChart = new Chart(canvasRef.current, {
       type: "line",
       options: {
@@ -73,7 +71,7 @@ const LineChart = () => {
         },
         elements: {
           point: {
-            radius: 0,
+            radius: 1,
           },
         },
         scales: {
@@ -81,22 +79,22 @@ const LineChart = () => {
               grid: {
                   display: false,
               },
-              ticks: {
-                  autoSkip: false,
-              },
+              // ticks: {
+              //     autoSkip: false,
+              // },
           },
           y: {
               grid: {
                   display: false,
               },
-              ticks: {
-                  autoSkip: false,
-              },
+              // ticks: {
+              //     autoSkip: false,
+              // },
           },
       },
       },
       data: {
-        labels: labelLength,
+        labels: data.label,
         datasets: [
           {
             data: data.dataset1,

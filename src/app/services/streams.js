@@ -100,19 +100,22 @@ export const fleetChartData = async (filter = 'week') => {
         if(item && item['last_week']) {
           tdata['week']['dataset1'] = getDataset1(item['last_week']);
           tdata['week']['dataset2'] = getDataset2(item['last_week']);
+          tdata['week']['label'] = R.pluck('Date')(item['last_week']);
         }
         if(item && item['last_month']) {
           tdata['month']['dataset1'] = getDataset1(item['last_month']);
           tdata['month']['dataset2'] = getDataset2(item['last_month']);
+          tdata['month']['label'] = R.pluck('Month')(item['last_month']);
         }
         if(item && item['last_year']) {
           tdata['year']['dataset1'] = getDataset1(item['last_year']);
           tdata['year']['dataset2'] = getDataset2(item['last_year']);
+          tdata['year']['label'] = R.pluck('Year')(item['last_year']);
         }
-        if(item && item['all']) {
-          tdata['all']['dataset1'] = getDataset1([item['all']]);
-          tdata['all']['dataset2'] = getDataset2([item['all']]);
-        }
+        // if(item && item['all']) {
+        //   tdata['all']['dataset1'] = getDataset1([item['all']]);
+        //   tdata['all']['dataset2'] = getDataset2([item['all']]);
+        // }
       })
     }
     return tdata[filter]
