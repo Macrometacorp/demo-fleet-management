@@ -1,5 +1,6 @@
 import jsC8 from "jsc8";
 import config from "../services/config";
+import * as R from 'ramda';
 import {
   GET_TOP5_MAINTENANCE_CENTERS_FOR_CITY,
   GET_TELEMATICS_30_DAYS,
@@ -8,12 +9,17 @@ import {
   INSERT_UNPLANNED_MAINTENANCE,
   STREAMS,
   GET_FLEET_STATS,
+  GET_FLEET_STATS_CHART_DATA,
 } from "../util/constants";
 
 const jsc8Client = new jsC8({
   url: config.gdnURL,
   apiKey: `${config.apiKey}`,
 });
+
+const getDataset1 = R.pluck('Attention_Required');
+const getDataset2 = R.pluck('Critical_Status');
+
 
 export const maintenanceCenterList = async (city = "London") => {
   try {
@@ -82,25 +88,34 @@ export const fleetStats = async () => {
 
 export const fleetChartData = async (filter = 'week') => {
   try {
-    const data = {
-      week: {
-        dataset1: [5, 10, 20, 10, 20, 30],
-        dataset2: [-5, -10, -20, -10, -20, -30],
-      },
-      month: {
-        dataset1: [15, 15, 25, 15, 25, 35],
-        dataset2: [-15, -15, -25, -15, -25, -35],
-      },
-      year: {
-        dataset1: [50, 100, 200, 100, 200, 300],
-        dataset2: [-50, -100, -200, -100, -200, -300],
-      },
-      all: {
-        dataset1: [15, 15, 25, 15, 25, 35],
-        dataset2: [-15, -15, -25, -15, -25, -35],
-      },
+    const tdata = {
+      week:{},
+      year:{},
+      month:{},
+      all:{}
     };
-    return data[filter]
+    let { result } = await jsc8Client.executeRestql(GET_FLEET_STATS_CHART_DATA);
+    if(result){
+      result = result.forEach(item=>{
+        if(item && item['last_week']) {
+          tdata['week']['dataset1'] = getDataset1(item['last_week']);
+          tdata['week']['dataset2'] = getDataset2(item['last_week']);
+        }
+        if(item && item['last_month']) {
+          tdata['month']['dataset1'] = getDataset1(item['last_month']);
+          tdata['month']['dataset2'] = getDataset2(item['last_month']);
+        }
+        if(item && item['last_year']) {
+          tdata['year']['dataset1'] = getDataset1(item['last_year']);
+          tdata['year']['dataset2'] = getDataset2(item['last_year']);
+        }
+        if(item && item['all']) {
+          tdata['all']['dataset1'] = getDataset1([item['all']]);
+          tdata['all']['dataset2'] = getDataset2([item['all']]);
+        }
+      })
+    }
+    return tdata[filter]
   } catch (error) {
     console.error(error);
     throw error

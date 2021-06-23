@@ -4,6 +4,7 @@ import { Grid, makeStyles } from "@material-ui/core";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import ChartFilters from "./ChartFilters";
 import { fleetChartData } from "../services/streams";
+import useInterval from "../hooks/useInterval";
 
 // LineChart
 
@@ -47,6 +48,10 @@ const LineChart = () => {
     initFleetChartData(chartFilter)
   }, [chartFilter]);
 
+  useInterval(()=>{
+    initFleetChartData(chartFilter);
+  }, 10000);
+
   useEffect(() => {
     const ch = initChart(chartData);
     return () => {
@@ -55,6 +60,8 @@ const LineChart = () => {
   }, [canvasRef.current, chartData]);
 
   const initChart = (data) => {
+    const size = (data.dataset1 && data.dataset1.length) || 0
+    const labelLength = Array.from({length: size},(i,j)=>j);
     const myChart = new Chart(canvasRef.current, {
       type: "line",
       options: {
@@ -89,7 +96,7 @@ const LineChart = () => {
       },
       },
       data: {
-        labels: [1, 2, 3, 4, 5, 6, 7],
+        labels: labelLength,
         datasets: [
           {
             data: data.dataset1,
