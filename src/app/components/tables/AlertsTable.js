@@ -13,15 +13,15 @@ import {
 import Pagination from "@material-ui/lab/Pagination";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import AlertFilters from "./AlertFilters";
-import ModalComponent from "../ModalComponent";
+// import ModalComponent from "../ModalComponent";
 import {
   activeButtonClass,
   slicer,
   formatDate,
   printDate,
-  getRand,
+  // getRand,
 } from "../../services/util";
-import { telematicList, assetDetails, processBooking } from "../../services/streams";
+// import { telematicList, assetDetails, processBooking } from "../../services/streams";
 
 const useStyles = makeStyles({
   table: {
@@ -41,9 +41,9 @@ const useStyles = makeStyles({
   },
 });
 
-export default function AlertsTable({alertsData}) {
+export default function AlertsTable({alertsData, setOpenModal}) {
   const classes = useStyles();
-  const [openModal, setOpenModal] = useState({ status: false, data: {} });
+  // const [openModal, setOpenModal] = useState({ status: false, data: {} });
   const [alertStats, setAlertStats] = useState({
     all: 0,
     critical: 0,
@@ -59,56 +59,60 @@ export default function AlertsTable({alertsData}) {
     setPage(value);
   };
 
-  const initTelematicList = async () => {
-    try {
-      const results = await telematicList();
-      setOData(results);
-    } catch (error) {
-      console.error("falied to load maintenace centers", error.message);
-    }
-  };
+  // const initTelematicList = async () => {
+  //   try {
+  //     const results = await telematicList();
+  //     setOData(results);
+  //   } catch (error) {
+  //     console.error("falied to load maintenace centers", error.message);
+  //   }
+  // };
 
-  const initAssetDetails = async (data) => {
-    try {
-      const { Asset, Fault } = data.data;
-      const { date, maintenaceData } = data;
-      const [asetDetail] = await assetDetails(Asset);
-      const { Driver, Vehicle_Model } = asetDetail;
-      const { Estimated_Cost: Work_Cost } = maintenaceData;
-      const tdate = new Date(date);
-      const payload = {
-        Asset,
-        Booked_In: tdate.toISOString(),
-        Invoice_Number: getRand(),
-        Cost_Center: getRand(),
-        Vehicle_Model,
-        Driver,
-        Work_Description: Fault,
-        Work_Cost,
-      };
-      await processBooking(payload);
-      console.log("successfully booking processed!");
-    } catch (error) {
-      console.error('Failed to book maintenance', error.message);
-    }
-  };
+  // const initAssetDetails = async (data) => {
+  //   try {
+  //     const { Asset, Fault } = data.data;
+  //     const { date, maintenaceData } = data;
+  //     const [asetDetail] = await assetDetails(Asset);
+  //     const { Driver, Vehicle_Model } = asetDetail;
+  //     const { Estimated_Cost: Work_Cost } = maintenaceData;
+  //     const tdate = new Date(date);
+  //     const payload = {
+  //       Asset,
+  //       Booked_In: tdate.toISOString(),
+  //       Invoice_Number: getRand(),
+  //       Cost_Center: getRand(),
+  //       Vehicle_Model,
+  //       Driver,
+  //       Work_Description: Fault,
+  //       Work_Cost,
+  //     };
+  //     await processBooking(payload);
+  //     console.log("successfully booking processed!");
+  //   } catch (error) {
+  //     console.error('Failed to book maintenance', error.message);
+  //   }
+  // };
 
-  const handleBooking = (data) => {
-    let tdata = odata.map((item) => {
-      if (item._key === data._key) {
-        item.Maintenance_Planned = "Yes";
-        const date = new Date(data.date);
-        item.Booked_In = date.toISOString();
-      }
-      return item;
-    });
-    setOData(tdata);
-    initAssetDetails(data);
-  };
+  // const handleBooking = (data) => {
+  //   let tdata = odata.map((item) => {
+  //     if (item._key === data._key) {
+  //       item.Maintenance_Planned = "Yes";
+  //       const date = new Date(data.date);
+  //       item.Booked_In = date.toISOString();
+  //     }
+  //     return item;
+  //   });
+  //   setOData(tdata);
+  //   initAssetDetails(data);
+  // };
 
-  useEffect(() => {
-    initTelematicList();
-  }, []);
+  // useEffect(() => {
+  //   initTelematicList();
+  //   setInterval(()=>{ 
+  //     console.log('intialist telematics ....')
+  //     initTelematicList();
+  //   },10000)
+  // }, []);
 
   useEffect(() => {
     let data = odata.filter((item) => {
@@ -131,14 +135,15 @@ export default function AlertsTable({alertsData}) {
   }, [page]);
 
   useEffect(()=>{
-    const [ data = {} ] = alertsData;
-    if(data && Object.keys(data).length > 0){
-      data._key = getRand();
-      if(odata.length === 0) {
-        initTelematicList();
-      }
-      setOData([data, ...odata]);
-    }
+    // const [ data = {} ] = alertsData;
+    // if(data && Object.keys(data).length > 0){
+      // data._key = getRand();
+      // if(odata.length === 0) {
+      //   initTelematicList();
+      // }
+      // setOData([data, ...odata]);
+    // }
+    setOData(alertsData);
   },[alertsData])
 
   useEffect(() => {
@@ -232,11 +237,11 @@ export default function AlertsTable({alertsData}) {
             onChange={handleChange}
           />
         </TableContainer>
-        <ModalComponent
+        {/* <ModalComponent
           openModal={openModal}
           closeModal={() => setOpenModal({ status: false, data: { id: 0 } })}
           handleSelect={(data) => handleBooking(data)}
-        />
+        /> */}
       </div>
     </>
   );

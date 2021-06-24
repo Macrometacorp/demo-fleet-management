@@ -9,9 +9,11 @@ import {
   TableRow,
   Paper,
   Typography,
+  TextField,
+  Button
 } from "@material-ui/core";
 import DatePicker from "../DatePicker";
-import { maintenanceCenterList } from '../../services/streams'
+import { maintenanceCenterList } from "../../services/streams";
 
 const useStyles = makeStyles({
   table: {
@@ -25,24 +27,24 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ModalTable({handleSelect, alertData}) {
+export default function ModalTable({ handleSelect, alertData }) {
   const classes = useStyles();
-  const [selectedDate, ] = useState("06/15/2021");
+  const [selectedDate] = useState("06/15/2021");
   const [data, setData] = useState([]);
 
-  const initMaintenanceCenterList = async(city) => {
-    try {      
+  const initMaintenanceCenterList = async (city) => {
+    try {
       const results = await maintenanceCenterList(city);
-      setData(results)
+      setData(results);
     } catch (error) {
-      console.error('falied to load maintenace centers', error.message)
+      console.error("falied to load maintenace centers", error.message);
     }
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     const { City } = alertData;
     initMaintenanceCenterList(City);
-  },[])
+  }, []);
 
   return (
     <>
@@ -66,20 +68,32 @@ export default function ModalTable({handleSelect, alertData}) {
                     key={Math.random()}
                     style={i % 2 ? { background: "rgb(208 225 243)" } : {}}
                   >
-                    <TableCell align="center">
-                      {row.Name}
-                    </TableCell>
+                    <TableCell align="center">{row.Name}</TableCell>
                     <TableCell align="center">{row.Rating}/5.0</TableCell>
                     <TableCell align="center">{row.City}</TableCell>
-                    <TableCell align="center">{row.Estimated_Time}  {row.Estimated_Time === 1? 'Day': 'Days'}</TableCell>
+                    <TableCell align="center">
+                      {row.Estimated_Time}{" "}
+                      {row.Estimated_Time === 1 ? "Day" : "Days"}
+                    </TableCell>
                     <TableCell align="center">${row.Estimated_Cost}</TableCell>
                     <TableCell align="center">
-                      <DatePicker
+                      {/* <DatePicker
                         key={Math.random()}
                         onDateChange={(date) => {
                           handleSelect({date, maintenaceData:row})
                         }}
                         initialDate={selectedDate}
+                      /> */}
+                      <TextField
+                        type="date"
+                        defaultValue={selectedDate}
+                        className={classes.textField}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        onChange={(e) => {
+                          handleSelect({date:e.target.value, maintenaceData:row})
+                        }}
                       />
                     </TableCell>
                   </TableRow>

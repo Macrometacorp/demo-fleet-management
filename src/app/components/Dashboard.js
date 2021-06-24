@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, makeStyles, Grid } from "@material-ui/core";
+import ModalComponent from "./ModalComponent";
 import Header from "./Header";
 import ButtonBar from "./ButtonBar";
 import LineChart from "./LineChart";
@@ -7,8 +8,14 @@ import FleetStatusTable from "./tables/FleetStatusTable";
 import InsightsTable from "./tables/InsightsTable";
 import AlertsTable from "./tables/AlertsTable";
 import { intialize, onReady } from "../services/restql";
-import { startStopStream, createStreamReader } from "../services/streams";
-import { parseMessage } from "../services/util";
+import {
+  startStopStream,
+  createStreamReader,
+  processBooking,
+  assetDetails,
+  telematicList
+} from "../services/streams";
+import { parseMessage, getRand } from "../services/util";
 import { ENRICHTED_TELEMATICS } from "../util/constants";
 
 const useStyles = makeStyles({
@@ -36,6 +43,62 @@ const Dashboard = () => {
   const [isIntializeLoading, setIsIntializeLoading] = useState(false);
   const [streamConnections, setStreamConnections] = useState([]);
   const [alertsData, setAlertsData] = useState([]);
+  const [openModal, setOpenModal] = useState({ status: false, data: {} });
+
+  const initTelematicList = async () => {
+    try {
+      const results = await telematicList();
+      setAlertsData(results);
+    } catch (error) {
+      console.error("falied to load maintenace centers", error.message);
+    }
+  };
+
+  const initAssetDetails = async (data) => {
+    try {
+      const { Asset, Fault } = data.data;
+      const { date, maintenaceData } = data;
+      const [asetDetail] = await assetDetails(Asset);
+      const { Driver, Vehicle_Model } = asetDetail;
+      const { Estimated_Cost: Work_Cost } = maintenaceData;
+      const tdate = new Date(date);
+      const payload = {
+        Asset,
+        Booked_In: tdate.toISOString(),
+        Invoice_Number: getRand(),
+        Cost_Center: getRand(),
+        Vehicle_Model,
+        Driver,
+        Work_Description: Fault,
+        Work_Cost,
+      };
+      await processBooking(payload);
+      console.log("successfully booking processed!");
+    } catch (error) {
+      console.error("Failed to book maintenance", error.message);
+    }
+  };
+
+  const handleBooking = (data) => {
+    let tdata = alertsData.map((item) => {
+      if (item._key === data._key) {
+        item.Maintenance_Planned = "Yes";
+        const date = new Date(data.date);
+        item.Booked_In = date.toISOString();
+      }
+      return item;
+    });
+    setAlertsData(tdata);
+    initAssetDetails(data);
+  };
+
+  useEffect(() => {
+    initTelematicList();
+    setInterval(()=>{ 
+      console.log('intialise telematics ....')
+      initTelematicList();
+    },10000)
+  }, []);
 
   //button callback for all the rest
   const handleOnStart = () => {
@@ -124,6 +187,7 @@ const Dashboard = () => {
     if (!newData) {
       return;
     }
+    newData['_key'] = getRand()
     tempArr.push(newData);
     setAlertsData([...alertsData, ...tempArr]);
   };
@@ -167,9 +231,14 @@ const Dashboard = () => {
             </Grid>
           </Grid>
           <Grid item xs={6} className={classes.section}>
-            <AlertsTable alertsData={alertsData} />
+            <AlertsTable alertsData={alertsData} setOpenModal={setOpenModal} />
           </Grid>
         </Grid>
+        <ModalComponent
+          openModal={openModal}
+          closeModal={() => setOpenModal({ status: false, data: { id: 0 } })}
+          handleSelect={(data) => handleBooking(data)}
+        />
       </Container>
     </>
   );

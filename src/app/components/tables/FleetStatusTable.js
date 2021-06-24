@@ -40,12 +40,12 @@ export default function FleetStatusTable() {
   const tdata = {
     Attention_Required: (
       <>
-        Attention required <br /> (Next 7 days)
+        Attention required <br /> (Last 7 days)
       </>
     ),
     Critical_Status: (
       <>
-        Critical Status <br /> (Next 7 days)
+        Critical Status <br /> (Last 7 days)
       </>
     ),
     Fleet_Health: (
