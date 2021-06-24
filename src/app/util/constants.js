@@ -16,6 +16,7 @@ const LOAD_VEHICLE_ISSSUE_COUNTS = "load_vehicle_issue_counts"
 const LOAD_FLEET_STATS_COUNTS = "load_fleet_stats_counts"
 
 export const ON_READY = "on_ready"
+export const IS_DEMO_READY = "is_demo_ready"
 
 export const GET_TELEMATICS_30_DAYS = "get_telematics_30_days"
 export const GET_TOP5_MAINTENANCE_CENTERS_FOR_CITY = "get_top5_maintenance_centers_for_city"

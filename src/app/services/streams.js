@@ -1,6 +1,7 @@
 import jsC8 from "jsc8";
 import config from "../services/config";
 import * as R from 'ramda';
+import moment from 'moment';
 import {
   GET_TOP5_MAINTENANCE_CENTERS_FOR_CITY,
   GET_TELEMATICS_30_DAYS,
@@ -103,6 +104,7 @@ export const fleetChartData = async (filter = 'week') => {
           tdata['week']['label'] = R.pluck('Date')(item['last_week']);
         }
         if(item && item['last_month']) {
+          item['last_month'].sort((stat_1,stat_2)=> moment(stat_1.Month, "MMM-YYYY").valueOf() - moment(stat_2.Month, "MMM-YYYY").valueOf())
           tdata['month']['dataset1'] = getDataset1(item['last_month']);
           tdata['month']['dataset2'] = getDataset2(item['last_month']);
           tdata['month']['label'] = R.pluck('Month')(item['last_month']);

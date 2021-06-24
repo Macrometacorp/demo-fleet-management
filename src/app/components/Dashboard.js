@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, makeStyles, Grid } from "@material-ui/core";
 import Header from "./Header";
 import ButtonBar from "./ButtonBar";
@@ -6,9 +6,9 @@ import LineChart from "./LineChart";
 import FleetStatusTable from "./tables/FleetStatusTable";
 import InsightsTable from "./tables/InsightsTable";
 import AlertsTable from "./tables/AlertsTable";
-import { intialize, onReady } from "../services/restql";
-import { startStopStream, createStreamReader } from "../services/streams";
-import { parseMessage } from "../services/util";
+import { intialize, isDemoReady } from "../services/restql";
+import { startStopStream, createStreamReader, telematicList } from "../services/streams";
+import { parseMessage, getRand } from "../services/util";
 import { ENRICHTED_TELEMATICS } from "../util/constants";
 
 const useStyles = makeStyles({
@@ -34,8 +34,20 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isStopLoading, setIsStopLoading] = useState(false);
   const [isIntializeLoading, setIsIntializeLoading] = useState(false);
+  const [isStartButtonDisabled, setIsStartButtonDisabled] = useState(true);
   const [streamConnections, setStreamConnections] = useState([]);
   const [alertsData, setAlertsData] = useState([]);
+
+
+  const initDemoReady = async() => {
+    const isReady = await isDemoReady();
+    if(!isReady) setAlertsData([]);
+    setIsStartButtonDisabled(!isReady)
+  }
+
+  useEffect(()=>{
+    initDemoReady();
+  },[isLoading, isStopLoading, isIntializeLoading])
 
   //button callback for all the rest
   const handleOnStart = () => {
@@ -57,9 +69,26 @@ const Dashboard = () => {
     console.log("started intialized!");
   };
 
+  const initTelematicList = async () => {
+    try {
+      const results = await telematicList();
+      let data = [...results];
+      data = data.filter((item)=>item).filter(item=>Object.keys(item).length > 0);
+      data = [...new Map(data.map(item => [item._key, item])).values()]
+      setAlertsData(data);
+    } catch (error) {
+      console.error("falied to load maintenace centers", error.message);
+    }
+  };
+
+  useEffect(()=>{
+    if(!isIntializeLoading) {
+      initTelematicList();
+    }
+  },[isIntializeLoading])
+
   const closeStreamAndWebSocket = async () => {
     try {
-      await onReady(false);
       for (const elements of streamConnections) {
         await elements.terminate();
       }
@@ -120,12 +149,13 @@ const Dashboard = () => {
 
   const messageManipulation = (message, streamName) => {
     let tempArr = [];
-    const { newData } = parseMessage(message);
-    if (!newData) {
+    const { newData = {} } = parseMessage(message);
+    if (!newData || Object.keys(newData).length === 0) {
       return;
     }
+    newData['_key'] = getRand()
     tempArr.push(newData);
-    setAlertsData([...alertsData, ...tempArr]);
+    setAlertsData((prev) => [...tempArr, ...prev]);
   };
 
   return (
@@ -138,7 +168,8 @@ const Dashboard = () => {
         <ButtonBar
           handleOnStart={handleOnStart}
           handleOnStop={handleOnStop}
-          isStartButtonDisabled={isLoading}
+          isLoading={isLoading}
+          isStartButtonDisabled={isStartButtonDisabled}
           isStopButtonDisabled={isStopLoading}
           isStreamStarted={isStreamStarted}
         />

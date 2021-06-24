@@ -19,6 +19,7 @@ const useStyles = makeStyles({
 const ButtonBar = ({
   handleOnStart,
   handleOnStop,
+  isLoading,
   isStartButtonDisabled,
   isStopButtonDisabled,
   isStreamStarted,
@@ -31,15 +32,15 @@ const ButtonBar = ({
         variant="contained"
         className={classes.actionButton}
         onClick={handleOnStart}
-        disabled={isStartButtonDisabled || isStreamStarted}
+        disabled={(isStartButtonDisabled && !isStopButtonDisabled) || isStreamStarted}
       >
-        {isStartButtonDisabled ? <CircularProgress size={24} /> : "Start"}
+        {isLoading ? <CircularProgress size={24} /> : "Start"}
       </Button>
       <Button
         variant="contained"
         className={classes.actionButton}
         onClick={handleOnStop}
-        disabled={isStopButtonDisabled || !isStreamStarted}
+        disabled={(!isStartButtonDisabled && isStopButtonDisabled) || !isStreamStarted}
       >
         {isStopButtonDisabled ? <CircularProgress size={24} /> : "Stop"}
       </Button>

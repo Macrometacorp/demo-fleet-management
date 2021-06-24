@@ -59,14 +59,14 @@ export default function AlertsTable({alertsData}) {
     setPage(value);
   };
 
-  const initTelematicList = async () => {
-    try {
-      const results = await telematicList();
-      setOData(results);
-    } catch (error) {
-      console.error("falied to load maintenace centers", error.message);
-    }
-  };
+  // const initTelematicList = async () => {
+  //   try {
+  //     const results = await telematicList();
+  //     setOData(results);
+  //   } catch (error) {
+  //     console.error("falied to load maintenace centers", error.message);
+  //   }
+  // };
 
   const initAssetDetails = async (data) => {
     try {
@@ -106,9 +106,9 @@ export default function AlertsTable({alertsData}) {
     initAssetDetails(data);
   };
 
-  useEffect(() => {
-    initTelematicList();
-  }, []);
+  // useEffect(() => {
+  //   initTelematicList();
+  // }, []);
 
   useEffect(() => {
     let data = odata.filter((item) => {
@@ -131,14 +131,15 @@ export default function AlertsTable({alertsData}) {
   }, [page]);
 
   useEffect(()=>{
-    const [ data = {} ] = alertsData;
-    if(data && Object.keys(data).length > 0){
-      data._key = getRand();
-      if(odata.length === 0) {
-        initTelematicList();
-      }
-      setOData([data, ...odata]);
-    }
+    // const [ data = {} ] = alertsData;
+    // if(data && Object.keys(data).length > 0){
+    //   data._key = getRand();
+    //   if(odata.length === 0) {
+    //     initTelematicList();
+    //   }
+    //   setOData([data, ...odata]);
+    // }
+    setOData(alertsData);
   },[alertsData])
 
   useEffect(() => {
