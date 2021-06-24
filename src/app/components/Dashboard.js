@@ -6,7 +6,7 @@ import LineChart from "./LineChart";
 import FleetStatusTable from "./tables/FleetStatusTable";
 import InsightsTable from "./tables/InsightsTable";
 import AlertsTable from "./tables/AlertsTable";
-import { intialize } from "../services/restql";
+import { intialize, onReady } from "../services/restql";
 import { startStopStream, createStreamReader } from "../services/streams";
 import { parseMessage } from "../services/util";
 import { ENRICHTED_TELEMATICS } from "../util/constants";
@@ -59,6 +59,7 @@ const Dashboard = () => {
 
   const closeStreamAndWebSocket = async () => {
     try {
+      await onReady(false);
       for (const elements of streamConnections) {
         await elements.terminate();
       }

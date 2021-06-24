@@ -116,6 +116,14 @@ INSERT maintenance INTO planned_maintenance
 ```
 
 ```
+Query Name: is_demo_ready
+FOR status in demo_status
+    FILTER status._key == "hitachi"
+    RETURN status
+
+```
+
+```
 Query Name: is_asset_maintenance_planned
 LET Maintenance_Planned = (
     FOR asset_maintenance IN planned_maintenance

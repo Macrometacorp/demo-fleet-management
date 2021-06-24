@@ -13,7 +13,7 @@ export const intialize = async (callback) => {
     await startStopStream();
     await truncateCollections();
     await loadDataCollections();
-    await onReady();
+    await onReady(true);
     callback(false);
   } catch (error) {
     console.error("Failed to intialize", error.message);
@@ -48,9 +48,9 @@ const loadDataCollections = async () => {
   }
 };
 
-const onReady = async () => {
+export const onReady = async (status) => {
   try {
-    await jsc8Client.executeRestql(ON_READY);
+    await jsc8Client.executeRestql(ON_READY, { status });
   } catch (error) {
     console.error("Failed to onReady", error.message);
   }
