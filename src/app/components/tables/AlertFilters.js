@@ -14,9 +14,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     "& > *": {
-      marginRight: theme.spacing(2),
+      marginRight: '10px', //theme.spacing(2),
       marginTop: "0.6rem",
-      flex: 1
+      flex: 1,
+      padding: '5px 0px'
     },
   },
 }));
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 export default function AlertFilters({stats, setAlterFilter}) {
   const classes = useStyles();
   const [selected, setSelected] = useState("all");
-  const { all, critical, attention, booked } = stats;
+  const { all, critical, attention, booked, unbooked } = stats;
   const computeClass = (val) =>
     `${selected === val ? classes.activeActionButton : classes.actionButton}`;
 
@@ -62,6 +63,13 @@ export default function AlertFilters({stats, setAlterFilter}) {
           className={computeClass("booked")}
         >
           Booked ({booked})
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => setSelected("unbooked")}
+          className={computeClass("unbooked")}
+        >
+          To be Booked ({unbooked})
         </Button>
       </div>
     </>

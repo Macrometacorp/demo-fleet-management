@@ -15,7 +15,7 @@ let closeImg = {
   width: "50px",
 };
 
-export default function ModalComponent(props) {
+export default React.memo(function ModalComponent(props) {
   const { openModal, closeModal, handleSelect } = props;
   const [open, setOpen] = React.useState(false);
   const [modalData, setModalData] = useState({
@@ -39,6 +39,12 @@ export default function ModalComponent(props) {
     handleSelect({ ...data, _key: modalData._key, data: modalData });
   };
   const { Asset } = modalData;
+
+  useEffect(()=>{
+    console.log('init modal component!')
+  },[])
+  console.log('Load modal component!')
+
   return (
     <React.Fragment>
       <Dialog
@@ -64,4 +70,4 @@ export default function ModalComponent(props) {
       </Dialog>
     </React.Fragment>
   );
-}
+})

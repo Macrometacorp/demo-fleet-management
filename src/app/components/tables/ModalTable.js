@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Table,
@@ -9,17 +9,19 @@ import {
   TableRow,
   Paper,
   Typography,
+  Button
 } from "@material-ui/core";
-import DatePicker from "../DatePicker";
+// import DatePicker from "../DatePicker";
 import { maintenanceCenterList } from '../../services/streams'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { activeButtonClass } from "../../services/util";
 
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
-  root: {
-    // paddingTop: "1rem",
-  },
+  activeActionButton: { ...activeButtonClass, width: "5rem" },
   pagination: {
     borderRadius: "none",
   },
@@ -27,8 +29,10 @@ const useStyles = makeStyles({
 
 export default function ModalTable({handleSelect, alertData}) {
   const classes = useStyles();
-  const [selectedDate, ] = useState("06/15/2021");
+  // const [selectedDate, ] = useState("06/15/2021");
+  const [selectedCenter, setSelectedCenter] = useState({});
   const [data, setData] = useState([]);
+  const [focus, setFocus] = useState(false);
 
   const initMaintenanceCenterList = async(city) => {
     try {      
@@ -39,11 +43,25 @@ export default function ModalTable({handleSelect, alertData}) {
     }
   }
 
+  const component = useRef(null)
+
+  const toggle = (data) => {
+    setSelectedCenter(data);
+    component.current.setOpen(true);
+    setFocus(!focus)
+  }
+
+  const handleChange = (date) => {
+    handleSelect({date, maintenaceData:selectedCenter})
+  }
+
   useEffect(()=>{
     const { City } = alertData;
     initMaintenanceCenterList(City);
+    document.querySelector(".react-datepicker-wrapper").style.visibility = "hidden";
+    document.querySelector(".react-datepicker-wrapper").style.width = "64px";
   },[])
-
+  
   return (
     <>
       <Typography component={"div"} className={classes.root}>
@@ -56,7 +74,14 @@ export default function ModalTable({handleSelect, alertData}) {
                 <TableCell align="center">City</TableCell>
                 <TableCell align="center">Estimated Time</TableCell>
                 <TableCell align="center">Estimated Cost</TableCell>
-                <TableCell align="center">Select</TableCell>
+                <TableCell align="center">Select
+                <DatePicker
+                  ref={(r) => {
+                    component.current = r;
+                  }}
+                  onChange={handleChange}
+                />
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -74,19 +99,26 @@ export default function ModalTable({handleSelect, alertData}) {
                     <TableCell align="center">{row.Estimated_Time}  {row.Estimated_Time === 1? 'Day': 'Days'}</TableCell>
                     <TableCell align="center">${row.Estimated_Cost}</TableCell>
                     <TableCell align="center">
-                      <DatePicker
+                      {/* <DatePicker
                         key={Math.random()}
                         onDateChange={(date) => {
                           handleSelect({date, maintenaceData:row})
                         }}
                         initialDate={selectedDate}
-                      />
+                      /> */} 
+                      <Button
+                       variant="contained"
+                       color="primary"
+                       style={{padding:'0px'}}
+                       className={classes.activeActionButton} 
+                      onClick={() => toggle(row)}>Select</Button>
                     </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
           </Table>
         </TableContainer>
+        
       </Typography>
     </>
   );

@@ -49,7 +49,7 @@ const theme = createMuiTheme({
         borderRadius: "0px",
       },
       page: {
-        padding: "25px",
+        padding: "23px",
         "&$selected": {
           backgroundColor: "#4b81c3",
           color: "#ffffff",

@@ -7,9 +7,16 @@ import FleetStatusTable from "./tables/FleetStatusTable";
 import InsightsTable from "./tables/InsightsTable";
 import AlertsTable from "./tables/AlertsTable";
 import { intialize, isDemoReady } from "../services/restql";
-import { startStopStream, createStreamReader, telematicList } from "../services/streams";
+import {
+  startStopStream,
+  createStreamReader,
+  telematicList,
+  assetDetails,
+  processBooking,
+} from "../services/streams";
 import { parseMessage, getRand } from "../services/util";
 import { ENRICHTED_TELEMATICS } from "../util/constants";
+import ModalComponent from "./ModalComponent";
 
 const useStyles = makeStyles({
   root: {
@@ -37,17 +44,55 @@ const Dashboard = () => {
   const [isStartButtonDisabled, setIsStartButtonDisabled] = useState(true);
   const [streamConnections, setStreamConnections] = useState([]);
   const [alertsData, setAlertsData] = useState([]);
+  const [openModal, setOpenModal] = useState({ status: false, data: {} });
 
-
-  const initDemoReady = async() => {
+  const initDemoReady = async () => {
     const isReady = await isDemoReady();
-    if(!isReady) setAlertsData([]);
-    setIsStartButtonDisabled(!isReady)
-  }
+    if (!isReady) setAlertsData([]);
+    setIsStartButtonDisabled(!isReady);
+  };
 
-  useEffect(()=>{
+  const handleBooking = (data) => {
+    let tdata = alertsData.map((item) => {
+      if (item._key === data._key) {
+        item.Maintenance_Planned = "Yes";
+        const date = new Date(data.date);
+        item.Booked_In = date.toISOString();
+      }
+      return item;
+    });
+    setAlertsData(tdata);
+    initAssetDetails(data);
+  };
+
+  const initAssetDetails = async (data) => {
+    try {
+      const { Asset, Fault } = data.data;
+      const { date, maintenaceData } = data;
+      const [asetDetail] = await assetDetails(Asset);
+      const { Driver, Vehicle_Model } = asetDetail;
+      const { Estimated_Cost: Work_Cost } = maintenaceData;
+      const tdate = new Date(date);
+      const payload = {
+        Asset,
+        Booked_In: tdate.toISOString(),
+        Invoice_Number: getRand(),
+        Cost_Center: getRand(),
+        Vehicle_Model,
+        Driver,
+        Work_Description: Fault,
+        Work_Cost,
+      };
+      await processBooking(payload);
+      console.log("successfully booking processed!");
+    } catch (error) {
+      console.error("Failed to book maintenance", error.message);
+    }
+  };
+
+  useEffect(() => {
     initDemoReady();
-  },[isLoading, isStopLoading, isIntializeLoading])
+  }, [isLoading, isStopLoading, isIntializeLoading]);
 
   //button callback for all the rest
   const handleOnStart = () => {
@@ -73,19 +118,27 @@ const Dashboard = () => {
     try {
       const results = await telematicList();
       let data = [...results];
-      data = data.filter((item)=>item).filter(item=>Object.keys(item).length > 0);
-      data = [...new Map(data.map(item => [item._key, item])).values()]
+      data = data
+        .filter((item) => item)
+        .filter((item) => Object.keys(item).length > 0);
+      data = [...new Map(data.map((item) => [item._key, item])).values()];
       setAlertsData(data);
     } catch (error) {
       console.error("falied to load maintenace centers", error.message);
     }
   };
 
-  useEffect(()=>{
-    if(!isIntializeLoading) {
+  useEffect(() => {
+    if (!isIntializeLoading) {
       initTelematicList();
     }
-  },[isIntializeLoading])
+  }, [isIntializeLoading]);
+
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     initTelematicList();
+  //   }, 5000);
+  // }, []);
 
   const closeStreamAndWebSocket = async () => {
     try {
@@ -153,7 +206,7 @@ const Dashboard = () => {
     if (!newData || Object.keys(newData).length === 0) {
       return;
     }
-    newData['_key'] = getRand()
+    newData["_key"] = getRand();
     tempArr.push(newData);
     setAlertsData((prev) => [...tempArr, ...prev]);
   };
@@ -198,9 +251,14 @@ const Dashboard = () => {
             </Grid>
           </Grid>
           <Grid item xs={6} className={classes.section}>
-            <AlertsTable alertsData={alertsData} />
+            <AlertsTable alertsData={alertsData} setOpenModal={setOpenModal}/>
           </Grid>
         </Grid>
+        <ModalComponent
+          openModal={openModal}
+          closeModal={() => setOpenModal({ status: false, data: { id: 0 } })}
+          handleSelect={(data) => handleBooking(data)}
+        />
       </Container>
     </>
   );
