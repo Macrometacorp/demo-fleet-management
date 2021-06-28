@@ -40,11 +40,6 @@ export default React.memo(function ModalComponent(props) {
   };
   const { Asset } = modalData;
 
-  useEffect(()=>{
-    console.log('init modal component!')
-  },[])
-  console.log('Load modal component!')
-
   return (
     <React.Fragment>
       <Dialog

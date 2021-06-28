@@ -84,7 +84,6 @@ const Dashboard = () => {
         Work_Cost,
       };
       await processBooking(payload);
-      console.log("successfully booking processed!");
     } catch (error) {
       console.error("Failed to book maintenance", error.message);
     }
@@ -96,22 +95,16 @@ const Dashboard = () => {
 
   //button callback for all the rest
   const handleOnStart = () => {
-    console.log("starting streams...");
     setIsLoading(true);
     startStreamAndWebSocket();
-    console.log("started streams!");
   };
   const handleOnStop = () => {
-    console.log("stoping intialized...");
     setIsStopLoading(true);
     closeStreamAndWebSocket();
-    console.log("stoped intialized!");
   };
   const handleOnIntialize = async () => {
-    console.log("starting intialized...");
     setIsIntializeLoading(true);
     await intialize(setIsIntializeLoading);
-    console.log("started intialized!");
   };
 
   const initTelematicList = async () => {
@@ -178,13 +171,13 @@ const Dashboard = () => {
     try {
       const _consumer = await createStreamReader(streamName);
       _consumer.on("open", () =>
-        console.log(`Connection open for ${streamName}`)
+        console.info(`Connection open for ${streamName}`)
       );
       _consumer.on("error", (error) =>
         console.error(`Connection error for ${streamName}`, error)
       );
       _consumer.on("close", () =>
-        console.log(`Connection close for ${streamName}`)
+        console.info(`Connection close for ${streamName}`)
       );
 
       _consumer.on("message", (message) => {
