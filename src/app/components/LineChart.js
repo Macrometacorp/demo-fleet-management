@@ -105,7 +105,7 @@ const LineChart = () => {
           {
             label: " Attention",
             data: data.dataset2,
-            borderColor: "#fbfb04",
+            borderColor: "#d8d800",
             borderWidth: 2,
           },
         ],

@@ -76,6 +76,7 @@ export default function ModalTable({handleSelect, alertData}) {
                 <TableCell align="center">Estimated Cost</TableCell>
                 <TableCell align="center">Select
                 <DatePicker
+                  minDate={new Date()}
                   ref={(r) => {
                     component.current = r;
                   }}

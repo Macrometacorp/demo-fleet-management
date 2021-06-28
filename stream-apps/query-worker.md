@@ -168,6 +168,7 @@ LET faults = ["Air Con","Battery","Brake Light","Brake Pads","Fuel Pump","Glow P
 
 FOR telematic_event IN telematics
     FILTER telematic_event.Maintenance_Planned == @is_planned_maintenance
+    SORT telematic_event.Timestamp ASC
     LIMIT @batch_offset, @event_limit
     RETURN {
         "Address": telematic_event.Address,

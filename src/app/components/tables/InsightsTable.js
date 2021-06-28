@@ -65,7 +65,7 @@ export default function InsightsTable() {
                     {tdata[key]}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {data && data.hasOwnProperty(key) && data[key]}
+                    {data && data.hasOwnProperty(key) ? data[key] : "-"}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     investigate
