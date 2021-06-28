@@ -1,22 +1,25 @@
 {
   "files": {
     "main.css": "/demo-fleet-management/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/demo-fleet-management/static/js/main.df0849a6.chunk.js",
-    "main.js.map": "/demo-fleet-management/static/js/main.df0849a6.chunk.js.map",
-    "runtime-main.js": "/demo-fleet-management/static/js/runtime-main.89acc334.js",
-    "runtime-main.js.map": "/demo-fleet-management/static/js/runtime-main.89acc334.js.map",
-    "static/js/2.f6832935.chunk.js": "/demo-fleet-management/static/js/2.f6832935.chunk.js",
-    "static/js/2.f6832935.chunk.js.map": "/demo-fleet-management/static/js/2.f6832935.chunk.js.map",
-    "static/js/3.91f5af07.chunk.js": "/demo-fleet-management/static/js/3.91f5af07.chunk.js",
-    "static/js/3.91f5af07.chunk.js.map": "/demo-fleet-management/static/js/3.91f5af07.chunk.js.map",
+    "main.js": "/demo-fleet-management/static/js/main.8c2836d7.chunk.js",
+    "main.js.map": "/demo-fleet-management/static/js/main.8c2836d7.chunk.js.map",
+    "runtime-main.js": "/demo-fleet-management/static/js/runtime-main.6a4cf535.js",
+    "runtime-main.js.map": "/demo-fleet-management/static/js/runtime-main.6a4cf535.js.map",
+    "static/css/2.496dcee5.chunk.css": "/demo-fleet-management/static/css/2.496dcee5.chunk.css",
+    "static/js/2.d84c0ecf.chunk.js": "/demo-fleet-management/static/js/2.d84c0ecf.chunk.js",
+    "static/js/2.d84c0ecf.chunk.js.map": "/demo-fleet-management/static/js/2.d84c0ecf.chunk.js.map",
+    "static/js/3.11cb7fc9.chunk.js": "/demo-fleet-management/static/js/3.11cb7fc9.chunk.js",
+    "static/js/3.11cb7fc9.chunk.js.map": "/demo-fleet-management/static/js/3.11cb7fc9.chunk.js.map",
     "index.html": "/demo-fleet-management/index.html",
+    "static/css/2.496dcee5.chunk.css.map": "/demo-fleet-management/static/css/2.496dcee5.chunk.css.map",
     "static/css/main.6dea0f05.chunk.css.map": "/demo-fleet-management/static/css/main.6dea0f05.chunk.css.map",
-    "static/js/2.f6832935.chunk.js.LICENSE.txt": "/demo-fleet-management/static/js/2.f6832935.chunk.js.LICENSE.txt"
+    "static/js/2.d84c0ecf.chunk.js.LICENSE.txt": "/demo-fleet-management/static/js/2.d84c0ecf.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.89acc334.js",
-    "static/js/2.f6832935.chunk.js",
+    "static/js/runtime-main.6a4cf535.js",
+    "static/css/2.496dcee5.chunk.css",
+    "static/js/2.d84c0ecf.chunk.js",
     "static/css/main.6dea0f05.chunk.css",
-    "static/js/main.df0849a6.chunk.js"
+    "static/js/main.8c2836d7.chunk.js"
   ]
 }
