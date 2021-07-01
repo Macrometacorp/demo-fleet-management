@@ -86,7 +86,7 @@ export default function FleetStatusTable() {
                   )}
                 </TableCell>
                 <TableCell className={classes.tableCell}>
-                  {(key === 'Fleet_Health') ? '-' : 
+                  
                   <b
                     style={{
                       color: `${
@@ -98,7 +98,6 @@ export default function FleetStatusTable() {
                   >
                     {data && data[key] && data[key][key]}
                   </b>
-                  }
                 </TableCell>
               </TableRow>
             ))}

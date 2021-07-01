@@ -341,6 +341,24 @@ LET last_7_14_days = (
     RETURN stat
 )
 
+LET last_7_days_critical_assets = (
+    FOR telematic IN telematics
+        FILTER
+            telematic.Status_Level == "Critical"
+            AND DATE_DIFF(DATE_SUBTRACT(DATE_NOW(), 7, "day"), DATE_TIMESTAMP(telematic.Timestamp), "day") <= 7
+            AND DATE_DIFF(DATE_SUBTRACT(DATE_NOW(), 7, "day"), DATE_TIMESTAMP(telematic.Timestamp), "day") > 0
+        RETURN DISTINCT telematic.Asset
+)
+
+LET last_7_14_days_critical_assets = (
+    FOR telematic IN telematics
+        FILTER
+            telematic.Status_Level == "Critical"
+            AND DATE_DIFF(DATE_SUBTRACT(DATE_NOW(), 14, "day"), DATE_TIMESTAMP(telematic.Timestamp), "day") <= 7
+            AND DATE_DIFF(DATE_SUBTRACT(DATE_NOW(), 14, "day"), DATE_TIMESTAMP(telematic.Timestamp), "day") > 0
+        RETURN DISTINCT telematic.Timestamp
+)
+
 LET status_for_last_7_14_days = {
     "Attention_Required": SUM(TO_ARRAY(last_7_14_days[*].Attention_Required)),
     "Critical_Status": SUM(TO_ARRAY(last_7_14_days[*].Critical_Status)),
@@ -371,6 +389,10 @@ RETURN {
     "Unplanned_Maintenance": {
         "Unplanned_Maintenance": status_for_last_7_days.Unplanned_Maintenance,
         "arrow": (status_for_last_7_days.Unplanned_Maintenance - status_for_last_7_14_days.Unplanned_Maintenance) >= 0  ? "Up" : "Down"
+    },
+    "Fleet_Health": {
+        "Fleet_Health": (1000 - COUNT(last_7_days_critical_assets))/10,
+        "arrow": (((1000 - COUNT(last_7_days_critical_assets))/10) - ((1000 - COUNT(last_7_14_days_critical_assets))/10)) >= 0  ? "Up" : "Down"
     }
 }
 ```
