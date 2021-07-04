@@ -85,8 +85,7 @@ export default function FleetStatusTable() {
                     <ArrowDropDownIcon style={{ fontSize: 50 }} />
                   )}
                 </TableCell>
-                <TableCell className={classes.tableCell}>
-                  
+                <TableCell className={classes.tableCell}>  
                   <b
                     style={{
                       color: `${

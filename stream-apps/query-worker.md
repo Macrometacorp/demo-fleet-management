@@ -1,20 +1,20 @@
+**get_asset_details:**
 ```
-Query Name: get_asset_details
 FOR asset IN assets
     FILTER asset.Asset == @Asset
     RETURN asset
 ```
 
+**get_telematics_30_days:**
 ```
-Query Name: get_telematics_30_days
 FOR event IN telematics
     FILTER event.Timestamp > DATE_SUBTRACT(DATE_NOW(), 31, "day")
     SORT event.Timestamp DESC
     RETURN event
 ```
 
+**get_top5_maintenance_centers_for_city:**
 ```
-Query Name: get_top5_maintenance_centers_for_city
 FOR maintenance_center IN maintenance_centers
     FILTER maintenance_center.City == @City
     SORT maintenance_center.Rating DESC
@@ -22,15 +22,15 @@ FOR maintenance_center IN maintenance_centers
     RETURN maintenance_center
 ```
 
+**on_ready:**
 ```
-Query Name: on_ready
-INSERT {
-    "ready": true
-} IN demo_status
+UPDATE { _key: "hitachi" }
+    WITH { ready: @status }
+    IN demo_status
 ```
 
+**load_maintenance_centers:**
 ```
-Query Name: load_maintenance_centers
 FOR maintenance_center IN maintenance_centers_seed_data
     INSERT { 
         "City": maintenance_center.City,
@@ -43,8 +43,8 @@ FOR maintenance_center IN maintenance_centers_seed_data
     INTO maintenance_centers
 ```
 
+**load_vehicle_issue_counts:**
 ```
-Query Name: load_vehicle_issue_counts
 LET Vehicle_Issue_Count = (
     FOR event IN telematics
         COLLECT Asset = event.Asset
@@ -71,8 +71,8 @@ FOR vehicle IN Vehicle_Issue_Count_With_Model
 INSERT vehicle INTO vehicle_issue_counts
 ```
 
+**load_telematics:**
 ```
-Query Name: load_telematics
 FOR telematic_event IN telematics_seed_data
     LET maintenance_planned = (
         FOR maintenance_planned IN planned_maintenance
@@ -93,8 +93,8 @@ FOR telematic_event IN telematics_seed_data
     } INTO telematics
 ```
 
+**load_planned_maintenance:**
 ```
-Query Name: load_planned_maintenance
 LET planned_maintenance_data  = (
     FOR maintenance_planned IN planned_maintenance_seed_data
         FOR asset IN assets
@@ -115,16 +115,15 @@ FOR maintenance IN planned_maintenance_data
 INSERT maintenance INTO planned_maintenance
 ```
 
+**is_demo_ready:**
 ```
-Query Name: is_demo_ready
 FOR status in demo_status
     FILTER status._key == "hitachi"
     RETURN status
-
 ```
 
+**is_asset_maintenance_planned:**
 ```
-Query Name: is_asset_maintenance_planned
 LET Maintenance_Planned = (
     FOR asset_maintenance IN planned_maintenance
     FILTER 
@@ -148,8 +147,8 @@ RETURN (
 )
 ```
 
+**insert_unplanned_maintenance:**
 ```
-Query Name: insert_unplanned_maintenance
 INSERT {
     "Asset": @Asset,
     "Booked_In": @Booked_In,
@@ -162,8 +161,8 @@ INSERT {
 }  INTO unplanned_maintenance
 ```
 
+**get_telematic_simulator_input_alert:**
 ```
-Query Name: get_telematic_simulator_input_alert
 LET faults = ["Air Con","Battery","Brake Light","Brake Pads","Fuel Pump","Glow Plugs","Head Lamp","Injectors","No Start","Radiator","Radio","Steering","Suspension","Tyre Pressure","Water Pump"]
 
 FOR telematic_event IN telematics
@@ -183,8 +182,8 @@ FOR telematic_event IN telematics
     }
 ```
 
+**get_telematic_insights:**
 ```
-Query Name: get_telematic_insights
 LET Vehicle_With_Most_Frequent_Issues = (
     FOR vehicle IN vehicle_issue_counts
         SORT vehicle.Count DESC
@@ -227,8 +226,8 @@ RETURN {
 }
 ```
 
+**load_area_issue_counts:**
 ```
-Query Name: load_area_issue_counts
 LET City_Wise_Faults_Count = (
     FOR event IN telematics
         COLLECT 
@@ -244,8 +243,8 @@ FOR city_wise_count IN City_Wise_Faults_Count
 INSERT city_wise_count INTO area_issue_counts
 ```
 
+**load_issue_counts:**
 ```
-Query Name: load_issue_counts
 LET Fault_Wise_Count = (
     FOR event IN telematics
         COLLECT 
@@ -261,8 +260,8 @@ FOR fault_count IN Fault_Wise_Count
 INSERT fault_count INTO issue_counts
 ```
 
+**load_fleet_stats_counts:**
 ```
-Query Name: load_fleet_stats_counts
 LET Attention_Required_Stats_By_Date = (
     FOR event IN telematics
         FILTER event.Status_Level == "Attention"
@@ -323,8 +322,8 @@ FOR attention_required_stats IN Attention_Required_Stats_By_Date
     } INTO fleet_stats
 ```
 
+**get_fleet_stats:**
 ```
-Query Name: get_fleet_stats
 LET last_7_days  = (
     FOR stat IN fleet_stats
         FILTER 
@@ -397,8 +396,8 @@ RETURN {
 }
 ```
 
+**get_fleet_stats_chart_data:**
 ```
-Query Name: get_fleet_stats_chart_data
 LET last_week  = (
     FOR stat IN fleet_stats
         FILTER 
@@ -477,8 +476,8 @@ RETURN {
 }
 ```
 
+**update_issue_counts:**
 ```
-Query Name: update_issue_counts
 UPSERT { "Fault": @fault }
 INSERT {
     "Fault": @fault,
@@ -490,8 +489,8 @@ UPDATE {
 IN issue_counts
 ```
 
+**update_area_issue_counts:**
 ```
-Query Name: update_area_issue_counts
 UPSERT { "City": @city }
 INSERT {
     "City": @city,
@@ -503,8 +502,8 @@ UPDATE {
 IN area_issue_counts
 ```
 
+**update_vehicle_issue_counts:**
 ```
-Query Name: update_vehicle_issue_counts
 UPSERT { "Asset": @asset }
 INSERT {
     "Asset": @asset,
@@ -518,8 +517,8 @@ UPDATE {
 IN vehicle_issue_counts
 ```
 
+**update_fleet_stats:**
 ```
-Query Name: update_fleet_stats
 UPSERT { _key: DATE_FORMAT(@key, "%yyyy-%mm-%dd") }
 INSERT {
     "_key": DATE_FORMAT(@key, "%yyyy-%mm-%dd"),

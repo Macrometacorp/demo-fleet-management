@@ -3,11 +3,10 @@
 @App:description("telematics-simulator")
 
 /* 
-• Generate 3 telematics alerts every 3 seconds
+• Generate 1 telematic alert every 3 seconds
 • Telematic alert composition every 3 seconds:
-    - 2 Planned Maintenance
-    - 1 Unplanned Maintenance
-• Read from Telematics collection 3 random alerts maintaining above alert composition and change the timestamps to current time before publishing these alerts.
+    - 1 Planned Maintenance or 1 Unplanned Maintenance
+• Read from Telematics collection random alerts maintaining above alert composition and change the timestamps to current time before publishing these alerts.
 */
 
 define trigger TelematicsSimulatorTrigger at every 3 sec;
