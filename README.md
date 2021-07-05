@@ -23,10 +23,10 @@ Simple, secure and scalable realtime fleet management.
 
 > ```
 > Create and publish following Stream Workers in your federation:
-> 1. insights-worker.md
-> 2. fleet-stats-worker.md
-> 3. telematics-worker.md
-> 4. telematics-simulator.md
+> 1. insights-worker
+> 2. fleet-stats-worker
+> 3. telematics-worker
+> 4. telematics-simulator
 >
 > Following Query Workers needs to be created:
 > 1. load_maintenance_centers
@@ -53,20 +53,20 @@ Simple, secure and scalable realtime fleet management.
 > 22. update_fleet_stats
 >
 > Following doc collections needs to be created:
-> 1. maintenance_centers_seed_data(seed data, global)
-> 2. planned_maintenance_seed_data(seed data, global)
-> 3. telematics_seed_data(seed data, global)
-> 4. demo_status(global)
-> 5. telematics(global)
-> 6. assets(global)
-> 7. faults(global)
-> 8. maintenance_centers(global)
-> 9. planned_maintenance(global)
-> 10. unplanned_maintenance(global)
-> 11. fleet_stats(global)
-> 12. issue_counts(global)
-> 13. area_issue_counts(global)
-> 14. vehicle_issue_counts(global)
+> 1. maintenance_centers_seed_data (seed data, global)
+> 2. planned_maintenance_seed_data (seed data, global)
+> 3. telematics_seed_data (seed data, global)
+> 4. demo_status (global)
+> 5. telematics (global)
+> 6. assets (global)
+> 7. faults (global)
+> 8. maintenance_centers (global)
+> 9. planned_maintenance (global)
+> 10. unplanned_maintenance (global)
+> 11. fleet_stats (global)
+> 12. issue_counts (global)
+> 13. area_issue_counts (global)
+> 14. vehicle_issue_counts (global)
 >
 > Note: If you have run this tutorial before, you may want to truncate the collections.
 > ```
@@ -95,20 +95,20 @@ Simple, secure and scalable realtime fleet management.
 
 ### Document Collections
 
-1. maintenance_centers_seed_data(seed data, global)
-2. planned_maintenance_seed_data(seed data, global)
-3. telematics_seed_data(seed data, global)
-4. demo_status(global)
-5. telematics(global)
-6. assets(global)
-7. faults(global)
-8. maintenance_centers(global)
-9. planned_maintenance(global)
-10. unplanned_maintenance(global)
-11. fleet_stats(global)
-12. issue_counts(global)
-13. area_issue_counts(global)
-14. vehicle_issue_counts(global)
+1. maintenance_centers_seed_data (seed data, global)
+2. planned_maintenance_seed_data (seed data, global)
+3. telematics_seed_data (seed data, global)
+4. demo_status (global)
+5. telematics (global)
+6. assets (global)
+7. faults (global)
+8. maintenance_centers (global)
+9. planned_maintenance (global)
+10. unplanned_maintenance (global)
+11. fleet_stats (global)
+12. issue_counts (global)
+13. area_issue_counts (global)
+14. vehicle_issue_counts (global)
 
 ### Indexes
 
