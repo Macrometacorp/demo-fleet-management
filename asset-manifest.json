@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/demo-fleet-management/static/css/main.6dea0f05.chunk.css",
-    "main.js": "/demo-fleet-management/static/js/main.48499dfc.chunk.js",
-    "main.js.map": "/demo-fleet-management/static/js/main.48499dfc.chunk.js.map",
+    "main.js": "/demo-fleet-management/static/js/main.ca6064dc.chunk.js",
+    "main.js.map": "/demo-fleet-management/static/js/main.ca6064dc.chunk.js.map",
     "runtime-main.js": "/demo-fleet-management/static/js/runtime-main.6a4cf535.js",
     "runtime-main.js.map": "/demo-fleet-management/static/js/runtime-main.6a4cf535.js.map",
     "static/css/2.496dcee5.chunk.css": "/demo-fleet-management/static/css/2.496dcee5.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.496dcee5.chunk.css",
     "static/js/2.d84c0ecf.chunk.js",
     "static/css/main.6dea0f05.chunk.css",
-    "static/js/main.48499dfc.chunk.js"
+    "static/js/main.ca6064dc.chunk.js"
   ]
 }
