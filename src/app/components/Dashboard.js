@@ -46,6 +46,21 @@ const Dashboard = () => {
   const [alertsData, setAlertsData] = useState([]);
   const [openModal, setOpenModal] = useState({ status: false, data: {} });
 
+  const handleClose = (event) => {
+    event.preventDefault();
+    handleOnStop();
+    // This is opening alert message
+    event.returnValue = "";
+    return "";
+  };
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", handleClose);
+    return () => {
+      window.removeEventListener("beforeunload", handleClose);
+    };
+  }, []);
+  
   const initDemoReady = async () => {
     const isReady = await isDemoReady();
     if (!isReady) setAlertsData([]);
