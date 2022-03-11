@@ -130,13 +130,15 @@ export const fleetChartData = async (filter = 'week') => {
 
 export const startStopStream = async (start = false) => {
   try {
-  let steamsArr = STREAM_WORKERS;
-  if(start === false){
-    steamsArr.reverse()
-  }
-  for (const element of steamsArr) {
-      await jsc8Client.activateStreamApp(element, start);
+    let steamsArr = STREAM_WORKERS;
+    if (start === false) {
+      steamsArr.reverse();
     }
+    const streamPromises = [];
+    steamsArr.forEach((element) => {
+      streamPromises.push(jsc8Client.activateStreamApp(element, start));
+    });
+    await Promise.all(streamPromises);
     return true;
   } catch (error) {
     console.error("Failed start ot stop strams", error.message);
