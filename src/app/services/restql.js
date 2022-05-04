@@ -6,6 +6,7 @@ import { startStopStream  } from "./streams";
 const jsc8Client = new jsC8({
   url: config.gdnURL,
   apiKey: `${config.apiKey}`,
+  fabricName: config.fabricName,
 });
 
 export const intialize = async (callback) => {

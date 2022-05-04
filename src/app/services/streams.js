@@ -16,6 +16,7 @@ import {
 const jsc8Client = new jsC8({
   url: config.gdnURL,
   apiKey: `${config.apiKey}`,
+  fabricName: config.fabricName,
 });
 
 const getDataset1 = R.pluck('Critical_Status');

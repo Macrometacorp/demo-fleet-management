@@ -1,6 +1,7 @@
 const config = {
-    gdnURL: "https://gdn.paas.macrometa.io",
-    apiKey: "XXXXX",
+    gdnURL: "{GDN_URL}",
+    apiKey: "{API_KEY}",
+    fabricName: "{FABRIC_NAME}"
 };
 
 export default config;
