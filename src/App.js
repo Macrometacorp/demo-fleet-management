@@ -24,9 +24,22 @@ const theme = createMuiTheme({
       },
     },
     MuiButton: {
+      contained: {
+        boxShadow: "none",
+        "&:hover, &:focus, &:active": {
+          boxShadow: "0 2px 5px rgba(133, 133, 235, .35)",
+        },
+      },
+      containedPrimary: {
+        backgroundColor: "#002F87",
+        color: "#FFF",
+        "&:hover, &:focus, &:active": {
+          backgroundColor: "#029AE0",
+          color: "#FFF",
+        },
+      },
       label: {
-        textTransform: "capitalize",
-        fontWeight: "600",
+        fontWeight: "700",
       },
     },
     MuiFormControl: {

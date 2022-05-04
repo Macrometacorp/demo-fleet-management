@@ -24,7 +24,7 @@ const useStyles = makeStyles({
 });
 
 const tdata = {
-  Vehicle_With_Most_Frequent_Issues: "Vechicle with most frequent issue",
+  Vehicle_With_Most_Frequent_Issues: "Vehicle with most frequent issue",
   Most_Common_Alert: "Most Common Alert",
   Total_Cost_Of_Unplanned_Maintenance: "Total Cost of Unplanned Maintenance",
   Area_With_Most_Alerts: "Area with most Alerts",
@@ -49,10 +49,11 @@ export default function InsightsTable() {
   return (
     <>
       <div style={{ display: "flex", marginBottom: "10px" }}>
-        <span
+        {/* <span
           className="fab fa-searchengin"
           style={{ fontSize: 40, marginTop: "10px" }}
-        ></span>
+        ></span> */}
+        <span style={{fontSize:40}}>🔍</span>
         <h3 className={classes.heading}> Insights</h3>
       </div>
       <TableContainer component={Paper}>

@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   heading: {
     margin: "10px",
     fontSize: "28px",
-    fontWeight: 400,
+    fontWeight: 600,
   },
 });
 
@@ -120,8 +120,9 @@ const LineChart = () => {
         <Grid container alignItems="center">
           <Grid item>
             <div style={{ display: "flex" }}>
-              <LocalShippingIcon style={{ fontSize: 50 }} />
-              <h3 className={classes.heading}> Fleet Status</h3>
+              {/* <LocalShippingIcon style={{ fontSize: 50 }} /> */}
+              <span style={{fontSize: 40}}>🚚</span>
+              <h3 className={classes.heading}>Fleet Status</h3>
             </div>
           </Grid>
         </Grid>
