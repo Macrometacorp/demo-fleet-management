@@ -1,73 +1,83 @@
-import {
-  Button,
-  Grid,
-  makeStyles,
-  CircularProgress,
-  Typography,
-} from "@material-ui/core";
 import React from "react";
+import {
+  Button, 
+  Grid, 
+  makeStyles, 
+  Typography
+} from "@material-ui/core";
+
+import MacrometaLogo from "../images/logo-coxedge.png";
 
 const useStyles = makeStyles({
-  header: {
-    fontWeight: "500 !important",
+  container: {
+    backgroundColor: "#fff",
+    borderBottom: "1px solid rgba(197, 200, 209, .5)",
+    padding: "0.5rem 1rem",
+  },
+  logo: {
+    height: "32px",
+    margin: "0 1rem 0 0",
+    padding: "0 0 0.25rem",
+    width: "128px",
+  },
+  heading: {
+    color: "#4D4DAD",
+    fontSize: "1rem",
+    fontWeight: "700 !important",
+    lineHeight: "32px",
+    margin: "0 0.5rem 0 0",
+    whiteSpace: "nowrap",
+  },
+  subheading: {
+    color: "#535968",
+    fontSize: "1rem",
+    fontWeight: "400 !important",
+    lineHeight: "32px",
+    margin: "0",
+    whiteSpace: "nowrap",
   },
   aboutButton: {
-    top: "1.1rem",
-    right: "2rem",
-    position: "absolute",
-    backgroundColor: "rgb(208 225 243)",
-    boxShadow: "none",
-    border: "1px solid rgb(169,169,169)",
-  },
-  intializeButton: {
-    top: "1.1rem",
-    right: "8rem",
-    position: "absolute",
-    backgroundColor: "rgb(208 225 243)",
-    boxShadow: "none",
-    border: "1px solid rgb(169,169,169)",
+    textTransform: "none",
+    whiteSpace: "nowrap",
   },
 });
 
-const Header = ({ handleOnIntialize, isIntializeButtonDisabled }) => {
-  const classes = useStyles();
+const Header = () => {
+  const classes = useStyles()
 
   return (
-    <>
-      <Grid container direction="column" justify="center" alignItems="stretch">
-        <Typography variant="h4" align="center" className={classes.header}>
-          Macrometa - Realtime Fleet Management
+    <Grid
+      alignItems="center"
+      className={classes.container}
+      container={true}
+      direction="row"
+      justify="space-between"
+      wrap="nowrap"
+    >
+      <Grid container justify="flex-start" alignItems="center" wrap="nowrap">
+        <img alt="Macrometa" className={classes.logo} src={MacrometaLogo} />
+        <Typography variant="h1" className={classes.heading}>
+          Realtime Fleet Management
         </Typography>
-        <Typography variant="subtitle1" align="center" className={classes.header}>
-                    Simple, secure and scalable realtime fleet management.
-          </Typography>
+        <Typography className={classes.subheading}>
+          Simple, secure and scalable realtime fleet management.
+        </Typography>
       </Grid>
-      <Button
-        variant="contained"
-        className={classes.intializeButton}
-        onClick={() => {
-          handleOnIntialize();
-        }}
-      >
-        {isIntializeButtonDisabled ? (
-          <CircularProgress size={24} />
-        ) : (
-          "Intialize"
-        )}
-      </Button>
-      <Button
-        variant="contained"
-        className={classes.aboutButton}
-        onClick={() => {
-          window.open(
-            "https://github.com/Macrometacorp/demo-fleet-management",
-            "_blank"
-          );
-        }}
-      >
-        About
-      </Button>
-    </>
+      {/* <Grid container justify="flex-end" alignItems="center" wrap="nowrap">
+        <Button
+          className={classes.aboutButton}
+          onClick={() => {
+            window.open(
+              "https://github.com/Macrometacorp/demo-fleet-management",
+              "_blank"
+            );
+          }}
+          variant="contained"
+        >
+          Source on GitHub
+        </Button>
+      </Grid> */}
+    </Grid>
   );
 };
 

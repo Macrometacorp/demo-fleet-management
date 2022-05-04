@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {Container, Grid, Paper, makeStyles} from "@material-ui/core";
-import Header from "./Header2";
-import ButtonBar from "./ButtonBar2";
+import Header from "./Header";
+import ButtonBar from "./ButtonBar";
 import Footer from "./Footer";
 import LineChart from "./LineChart";
 import FleetStatusTable from "./tables/FleetStatusTable";
