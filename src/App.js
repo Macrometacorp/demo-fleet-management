@@ -3,26 +3,9 @@ import Dashboard from "./app/components/Dashboard";
 
 const theme = createMuiTheme({
   typography: {
-    fontFamily: "Lato",
+    fontFamily: ["Lato", "sans-serif"].join(","),
   },
   overrides: {
-    MuiTableCell: {
-      root: {
-        padding: "0.8rem",
-      },
-      stickyHeader: {
-        backgroundColor: "#d0e0f3",
-      },
-      head: {
-        color: "#ffffff",
-        fontWeight: 900,
-      },
-    },
-    MuiTypography: {
-      root: {
-        fontWeight: "600 !important",
-      },
-    },
     MuiButton: {
       contained: {
         boxShadow: "none",
@@ -39,12 +22,30 @@ const theme = createMuiTheme({
         },
       },
       label: {
+        textTransform: "capitalize",
         fontWeight: "700",
       },
     },
     MuiFormControl: {
       root: {
         height: "56px",
+      },
+    },
+    MuiTableCell: {
+      root: {
+        padding: "0.8rem",
+      },
+      stickyHeader: {
+        backgroundColor: "#d0e0f3",
+      },
+      head: {
+        color: "#ffffff",
+        fontWeight: 900,
+      },
+    },
+    MuiTypography: {
+      root: {
+        fontWeight: "600 !important",
       },
     },
     MuiInputLabel: {

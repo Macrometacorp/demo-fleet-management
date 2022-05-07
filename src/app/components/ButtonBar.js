@@ -13,6 +13,10 @@ const useStyles = makeStyles({
   },
   actionButton: {
     marginRight: "0.5rem",
+
+    "& .MuiButton-label": {
+      textTransform: "uppercase",
+    }
   },
 });
 
@@ -46,7 +50,7 @@ const ButtonBar = ({
             onClick={handleOnClear}
             variant="contained"
           >
-            {isClearButtonDisabled ? <CircularProgress size={24} /> : "Clear"}
+            {isClearButtonDisabled ? <CircularProgress size={24} /> : "Initialize"}
           </Button>
         </>
       ) : (
