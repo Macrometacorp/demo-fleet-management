@@ -1,127 +1,92 @@
-# Realtime fleet management using Macrometa GDN
+# Fleet Management :truck:
+[:link: Here](https://x9q3k9k5.stackpathcdn.com) is the link for the live demo!
 
-### Live Demo: https://macrometacorp.github.io/demo-fleet-management/
+## Overview
+A simple, secure and scalable real-time fleet management.
 
-Simple, secure and scalable realtime fleet management.
+## Edge Database Resources
+### :small_blue_diamond: Document Collections
 
-**Data Flows:**
-![fleet-management-flows.png](fleet-management-flows.png)
+In Cox Edge Portal, go to **Edge Database/COLLECTIONS** section and create the following list of global document collections.
+```
+- maintenance_centers_seed_data
+- planned_maintenance_seed_data
+- telematics_seed_data
+- demo_status
+- telematics
+- assets
+- faults
+- maintenance_centers
+- planned_maintenance
+- unplanned_maintenance
+- fleet_stats
+- issue_counts
+- area_issue_counts
+- vehicle_issue_counts
+```
 
-**Dashboard:**
-![fleet-management-dashboard.png](fleet-management-dashboard.png)
-
-## Setup
-
-| **Federation**                                        | **Email**                   | **Passsword** |
-| ----------------------------------------------------- | --------------------------- | ------------- |
-| [Global Data Network](https://gdn.paas.macrometa.io/) | demo-fleet1-management@macrometa.io                          | `xxxxxxxx`    |
-| [Demo Dashboard](https://macrometacorp.github.io/demo-fleet-management/)                                 | --                          | --            |
-
-## How to Run
-
-**On Federation:**
-
-> ```
-> Create and publish following Stream Workers in your federation:
-> 1. insights-worker
-> 2. fleet-stats-worker
-> 3. telematics-worker
-> 4. telematics-simulator
->
-> Following Query Workers needs to be created:
-> 1. load_maintenance_centers
-> 2. load_vehicle_issue_counts
-> 3. load_telematics
-> 4. load_planned_maintenance
-> 5. load_area_issue_counts
-> 6. load_issue_counts
-> 7. load_fleet_stats_counts
-> 8. on_ready
-> 9. is_demo_ready
-> 10. get_asset_details
-> 11. get_telematics_30_days
-> 12. get_top5_maintenance_centers_for_city
-> 13. is_asset_maintenance_planned
-> 14. insert_unplanned_maintenance
-> 15. get_telematic_simulator_input_alert
-> 16. get_telematic_insights
-> 17. get_fleet_stats
-> 18. get_fleet_stats_chart_data
-> 19. update_issue_counts
-> 20. update_area_issue_counts
-> 21. update_vehicle_issue_counts
-> 22. update_fleet_stats
->
-> Following doc collections needs to be created:
-> 1. maintenance_centers_seed_data (seed data, global)
-> 2. planned_maintenance_seed_data (seed data, global)
-> 3. telematics_seed_data (seed data, global)
-> 4. demo_status (global)
-> 5. telematics (global)
-> 6. assets (global)
-> 7. faults (global)
-> 8. maintenance_centers (global)
-> 9. planned_maintenance (global)
-> 10. unplanned_maintenance (global)
-> 11. fleet_stats (global)
-> 12. issue_counts (global)
-> 13. area_issue_counts (global)
-> 14. vehicle_issue_counts (global)
->
-> Note: If you have run this tutorial before, you may want to truncate the collections.
-> ```
-
-**On Development Machine:**
-
-> ```
-> git clone https://github.com/Macrometacorp/demo-fleet-management.git
-> cd demo-fleet-management
-> git fetch
-> npm install
-> npm run start
-> ```
-
-## Details
-
-### Stream Workers
-
-- **[Telematics Simulator](stream-apps/telematics-simulator.md)**
-
-- **[Telematics Worker](stream-apps/telematics-worker.md)**
-
-- **[Fleet Stats Worker](stream-apps/fleet-stats-worker.md)**
-
-- **[Insights Worker](stream-apps/insights-worker.md)**
-
-### Document Collections
-
-1. maintenance_centers_seed_data (seed data, global)
-2. planned_maintenance_seed_data (seed data, global)
-3. telematics_seed_data (seed data, global)
-4. demo_status (global)
-5. telematics (global)
-6. assets (global)
-7. faults (global)
-8. maintenance_centers (global)
-9. planned_maintenance (global)
-10. unplanned_maintenance (global)
-11. fleet_stats (global)
-12. issue_counts (global)
-13. area_issue_counts (global)
-14. vehicle_issue_counts (global)
-
-### Indexes
-
-Create persistent indexes on the collection `planned_maintenance` and `telematics` for the attributes
+Then, create **persistent** indexes on `planned_maintenance` and `telematics` collections for the attributes:
 | **Collection** | **Attribute** |
 | ---------------- | ------------------------------- |
-| planned_maintenance | `Asset` |
-| telematics | `Asset` |
-| telematics | `City` |
-| telematics | `Fault` |
-| telematics | `Timestamp` |
+| `planned_maintenance` | `Asset` |
+| `telematics` | `Asset` |
+| `telematics` | `City` |
+| `telematics` | `Fault` |
+| `telematics` | `Timestamp` |
 
+### :small_blue_diamond: Query Workers
+In **Edge Database/QUERIES** section, create the following list of query workers.
+```
+- load_maintenance_centers
+- load_vehicle_issue_counts
+- load_telematics
+- load_planned_maintenance
+- load_area_issue_counts
+- load_issue_counts
+- load_fleet_stats_counts
+- on_ready
+- is_demo_ready
+- get_asset_details
+- get_telematics_30_days
+- get_top5_maintenance_centers_for_city
+- is_asset_maintenance_planned
+- insert_unplanned_maintenance
+- get_telematic_simulator_input_alert
+- get_telematic_insights
+- get_fleet_stats
+- get_fleet_stats_chart_data
+- update_issue_counts
+- update_area_issue_counts
+- update_vehicle_issue_counts
+- update_fleet_stats
+```
+Refer to this [:link: link ](./edge-database/query-workers/query-workers.md) to get the code for each query worker.
 
-### Query Workers
+### :small_blue_diamond: Stream Workers
+Create and publish following Stream Workers in your federation:
+- [`insights-worker`](./edge-database/stream-workers/insights-worker.md)
+- [`fleet-stats-worker`](./edge-database/stream-workers/fleet-stats-worker.md)
+- [`telematics-worker`](./edge-database/stream-workers/telematics-worker.md)
+- [`telematics-simulator`](./edge-database/stream-workers/telematics-simulator.md)
 
-- **[Query Workers](stream-apps/query-worker.md)**
+🔍 You can check each query worker code by clicking on it.  
+
+:pencil: If you already ran this tutorial before, you may want to truncate the collections.
+
+## Run It Locally
+
+On your development machine, run the following commands in a terminal console:
+
+```
+git clone git@github.com:CoxEdge-Tools/demos.git
+
+cd demos/fleet-management
+
+npm install
+
+npm start
+```
+
+:pencil: You can run `npm run build` command to generate your `build` directory.
+
+:small_red_triangle: Don't forget to setup your environment variables in `.env.development.local` or `.env.production.local`.

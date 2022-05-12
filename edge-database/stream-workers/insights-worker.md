@@ -1,4 +1,4 @@
-```
+```js
 @App:name("insights-worker")
 @App:description("insights-worker")
 

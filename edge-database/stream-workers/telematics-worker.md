@@ -1,4 +1,4 @@
-```
+```js
 @App:name("telematics-worker")
 @App:description("telematics-worker")
 
