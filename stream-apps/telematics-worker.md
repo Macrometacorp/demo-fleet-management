@@ -8,29 +8,103 @@
 3. Populate Telematics Collection.
 */
 
-@source(type="c8streams", stream.list="telematics", replication.type="global", @map(type='json'))
-define stream TelematicsStream(Address string, Asset string, City string, Country string, Fault string, Maintenance_Planned string, Postcode string, Status_Level string, Timestamp string);
+@source(
+    type = "c8streams", 
+    stream.list = "telematics", 
+    replication.type = "global", 
+    @map(type = "json")
+)
+define stream TelematicsStream(
+    Address string, 
+    Asset string, 
+    City string, 
+    Country string, 
+    Fault string, 
+    Maintenance_Planned string, 
+    Postcode string, 
+    Status_Level string, 
+    Timestamp string
+);
 
-@sink(type="restql-call", restql.name="is_asset_maintenance_planned", sink.id="IsAssetMaintenancePlanned")
+@sink(
+    type = "restql-call",
+    restql.name = "is_asset_maintenance_planned",
+    sink.id = "IsAssetMaintenancePlanned"
+)
 define stream RestQlIsAssetMaintenancePlanned(asset string);
 
-@source(type="restql-call-response", sink.id="IsAssetMaintenancePlanned", @map(type='json'))
-define stream IsAssetMaintenancePlanned(Asset string, Booked_In string, Maintenance_Planned string);
+@source(
+    type = "restql-call-response",
+    sink.id = "IsAssetMaintenancePlanned",
+    @map(type = "json")
+)
+define stream IsAssetMaintenancePlanned(
+    Asset string,
+    Booked_In string,
+    Maintenance_Planned string
+);
 
-@sink(type="c8streams", stream="intermediate-telematics", replication.type="local", @map(type='json'))
-define stream IntermediateTelematicsStream(Address string, Asset string, Booked_In string, City string, Country string, Fault string, Maintenance_Planned string, Postcode string, Status_Level string, Timestamp string);
+@sink(
+    type = "c8streams",
+    stream = "intermediate-telematics",
+    replication.type = "local",
+    @map(type = "json")
+)
+define stream IntermediateTelematicsStream(
+    Address string,
+    Asset string,
+    Booked_In string,
+    City string,
+    Country string,
+    Fault string,
+    Maintenance_Planned string,
+    Postcode string,
+    Status_Level string,
+    Timestamp string
+);
 
-@store(type="c8db", collection="telematics", @map(type='json'))
-define table TelematicsCollection(Address string, Asset string, Booked_In string, City string, Country string, Fault string, Maintenance_Planned string, Postcode string, Status_Level string, Timestamp string);
+@store(
+    type = "c8db",
+    collection = "telematics",
+    @map(type = "json")
+)
+define table TelematicsCollection(
+    Address string,
+    Asset string,
+    Booked_In string,
+    City string,
+    Country string,
+    Fault string,
+    Maintenance_Planned string,
+    Postcode string,
+    Status_Level string,
+    Timestamp string
+);
 
-@sink(type="c8streams", stream="enriched-telematics", replication.type="global", @map(type='json'))
-define stream EnrichedTelematicsStream(Address string, Asset string, Booked_In string, City string, Country string, Fault string, Maintenance_Planned string, Postcode string, Status_Level string, Timestamp string);
+@sink(
+    type = "c8streams", 
+    stream = "enriched-telematics",
+    replication.type = "global",
+    @map(type = "json")
+)
+define stream EnrichedTelematicsStream(
+    Address string,
+    Asset string,
+    Booked_In string,
+    City string,
+    Country string,
+    Fault string,
+    Maintenance_Planned string,
+    Postcode string,
+    Status_Level string,
+    Timestamp string
+);
 
-SELECT Asset as asset
-FROM TelematicsStream
-INSERT INTO RestQlIsAssetMaintenancePlanned;
+select Asset as asset
+from TelematicsStream
+insert into RestQlIsAssetMaintenancePlanned;
 
-SELECT 
+select 
     TS.Address,
     TS.Asset,
     MP.Booked_In,
@@ -39,18 +113,18 @@ SELECT
     TS.Fault,
     MP.Maintenance_Planned,
     TS.Postcode,
-    ifThenElse(str:equalsIgnoreCase(TS.Fault, "No Start"), "Critical", "Attention") AS Status_Level,
+    ifThenElse(str:equalsIgnoreCase(TS.Fault, "No Start"), "Critical", "Attention") as Status_Level,
     TS.Timestamp
-FROM TelematicsStream#window.length(1) AS TS
-    JOIN IsAssetMaintenancePlanned#window.length(1) AS MP
-    ON TS.Asset == MP.Asset
-INSERT INTO IntermediateTelematicsStream;
+from TelematicsStream#window.length(1) as TS
+join IsAssetMaintenancePlanned#window.length(1) as MP
+on TS.Asset == MP.Asset
+insert into IntermediateTelematicsStream;
 
-SELECT *
-FROM IntermediateTelematicsStream
-INSERT INTO TelematicsCollection;
+select *
+from IntermediateTelematicsStream
+insert into TelematicsCollection;
 
-SELECT *
-FROM IntermediateTelematicsStream
-INSERT INTO EnrichedTelematicsStream;
+select *
+from IntermediateTelematicsStream
+insert into EnrichedTelematicsStream;
 ```

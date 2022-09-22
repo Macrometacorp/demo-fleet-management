@@ -1,7 +1,6 @@
 import Chart from "chart.js/auto";
 import React, { useEffect, useRef, useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
-import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import ChartFilters from "./ChartFilters";
 import { fleetChartData } from "../services/streams";
 import useInterval from "../hooks/useInterval";
@@ -29,7 +28,7 @@ const useStyles = makeStyles({
   heading: {
     margin: "10px",
     fontSize: "28px",
-    fontWeight: 400,
+    fontWeight: 600,
   },
 });
 
@@ -39,16 +38,16 @@ const LineChart = () => {
   const [chartFilter, setChartFilter] = useState("week");
   const [chartData, setChartData] = useState({});
 
-  const initFleetChartData = async(filter) => {
+  const initFleetChartData = async (filter) => {
     const result = await fleetChartData(filter);
     setChartData(result);
-  }
+  };
 
   useEffect(() => {
-    initFleetChartData(chartFilter)
+    initFleetChartData(chartFilter);
   }, [chartFilter]);
 
-  useInterval(()=>{
+  useInterval(() => {
     initFleetChartData(chartFilter);
   }, 10000);
 
@@ -76,22 +75,22 @@ const LineChart = () => {
         },
         scales: {
           x: {
-              grid: {
-                  display: false,
-              },
-              // ticks: {
-              //     autoSkip: false,
-              // },
+            grid: {
+              display: false,
+            },
+            // ticks: {
+            //     autoSkip: false,
+            // },
           },
           y: {
-              grid: {
-                  display: false,
-              },
-              // ticks: {
-              //     autoSkip: false,
-              // },
+            grid: {
+              display: false,
+            },
+            // ticks: {
+            //     autoSkip: false,
+            // },
           },
-      },
+        },
       },
       data: {
         labels: data.label,
@@ -120,8 +119,8 @@ const LineChart = () => {
         <Grid container alignItems="center">
           <Grid item>
             <div style={{ display: "flex" }}>
-              <LocalShippingIcon style={{ fontSize: 50 }} />
-              <h3 className={classes.heading}> Fleet Status</h3>
+              <span style={{ fontSize: 40 }}>🚚</span>
+              <h3 className={classes.heading}>Fleet Status</h3>
             </div>
           </Grid>
         </Grid>

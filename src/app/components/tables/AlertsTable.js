@@ -11,7 +11,6 @@ import {
   Button,
 } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
-import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import AlertFilters from "./AlertFilters";
 import {
   activeButtonClass,
@@ -34,7 +33,7 @@ const useStyles = makeStyles({
   heading: {
     margin: "10px",
     fontSize: "28px",
-    fontWeight: 400,
+    fontWeight: 600,
   },
 });
 
@@ -55,7 +54,6 @@ export default function AlertsTable({ alertsData, setOpenModal }) {
     setPage(value);
   };
 
-
   useEffect(() => {
     let data = odata.filter((item) => {
       let filter = alertFilter.toLowerCase();
@@ -72,7 +70,6 @@ export default function AlertsTable({ alertsData, setOpenModal }) {
     setFData(tempData);
     setTData(tempData[(page - 1) | 0]);
     tempData.length < page ? setPage(1) : setPage(page);
-
   }, [alertFilter, odata]);
 
   useEffect(() => {
@@ -103,7 +100,7 @@ export default function AlertsTable({ alertsData, setOpenModal }) {
   return (
     <>
       <div style={{ display: "flex" }}>
-        <NotificationsActiveIcon style={{ fontSize: 50 }} />
+        <span style={{ fontSize: 40 }}>🔔</span>
         <h3 className={classes.heading}>Alerts</h3>
       </div>
       <AlertFilters stats={alertStats} setAlterFilter={setAlterFilter} />
@@ -112,7 +109,7 @@ export default function AlertsTable({ alertsData, setOpenModal }) {
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell style={{ width: "5rem" }}>Vechicle ID</TableCell>
+                <TableCell style={{ width: "5rem" }}>Vehicle ID</TableCell>
                 <TableCell align="center">Alert &nbsp; Description</TableCell>
                 <TableCell align="center">Date &nbsp; Logged</TableCell>
                 <TableCell align="center">Status level</TableCell>

@@ -35,11 +35,11 @@ export default function InsightsTable() {
   const classes = useStyles();
   const [data, setData] = useState({});
   const initInsightList = async () => {
-    try {      
+    try {
       const result = await insightList();
       setData(result);
     } catch (error) {
-      console.error('falied to load the insigths', error.message);
+      console.error("falied to load the insigths", error.message);
     }
   };
   useEffect(() => {
@@ -49,10 +49,7 @@ export default function InsightsTable() {
   return (
     <>
       <div style={{ display: "flex", marginBottom: "10px" }}>
-        <span
-          className="fab fa-searchengin"
-          style={{ fontSize: 40, marginTop: "10px" }}
-        ></span>
+        <span style={{ fontSize: 40 }}>🔍</span>
         <h3 className={classes.heading}> Insights</h3>
       </div>
       <TableContainer component={Paper}>
