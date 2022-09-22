@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Container, makeStyles, Grid } from "@material-ui/core";
+import { Container, makeStyles, Grid, Paper } from "@material-ui/core";
 import Header from "./Header";
 import ButtonBar from "./ButtonBar";
+import Footer from "./Footer";
 import LineChart from "./LineChart";
 import FleetStatusTable from "./tables/FleetStatusTable";
 import InsightsTable from "./tables/InsightsTable";
@@ -20,10 +21,9 @@ import ModalComponent from "./ModalComponent";
 
 const useStyles = makeStyles({
   root: {
-    padding: "0.5rem",
-  },
-  section: {
-    paddingRight: "2rem",
+    backgroundColor: "#F1F2F4",
+    minHeight: "100vh",
+    padding: "0",
   },
   aboutButton: {
     top: "1.1rem",
@@ -60,7 +60,7 @@ const Dashboard = () => {
       window.removeEventListener("beforeunload", handleClose);
     };
   }, []);
-  
+
   const initDemoReady = async () => {
     const isReady = await isDemoReady();
     if (!isReady) setAlertsData([]);
@@ -222,51 +222,55 @@ const Dashboard = () => {
   return (
     <>
       <Container className={classes.root} maxWidth={false}>
-        <Header
-          handleOnIntialize={handleOnIntialize}
-          isIntializeButtonDisabled={isIntializeLoading}
-        />
+        <Header />
         <ButtonBar
+          handleOnClear={handleOnIntialize}
           handleOnStart={handleOnStart}
           handleOnStop={handleOnStop}
-          isLoading={isLoading}
-          isStartButtonDisabled={isStartButtonDisabled}
+          isStartButtonDisabled={isLoading}
           isStopButtonDisabled={isStopLoading}
+          isClearButtonDisabled={isIntializeLoading}
           isStreamStarted={isStreamStarted}
         />
-        <Grid
-          container
-          direction="row"
-          style={{ paddingTop: "32px" }}
-          alignItems="flex-start"
-        >
-          <Grid item xs={6} className={classes.section}>
-            <Grid container direction="row" alignItems="flex-start">
-              <Grid item xs={6} className={classes.section}>
-                <LineChart />
+
+        <Grid container alignItems="flex-start">
+          {/* Fleet Stats & Insights */}
+          <Grid item xs={6}>
+            <Paper
+              style={{ margin: "0.75rem", padding: "0.75rem 2rem 2rem 2rem" }}
+            >
+              <Grid container alignItems="flex-start">
+                <Grid item xs={6} style={{ paddingRight: "2rem" }}>
+                  <LineChart />
+                </Grid>
+                <Grid item xs={6} style={{ marginTop: "4rem" }}>
+                  <FleetStatusTable />
+                </Grid>
+                <Grid item xs={12} style={{ marginTop: "1rem" }}>
+                  <InsightsTable />
+                </Grid>
               </Grid>
-              <Grid
-                item
-                xs={6}
-                className={classes.section}
-                style={{ marginTop: "4rem" }}
-              >
-                <FleetStatusTable />
-              </Grid>
-              <Grid item xs={12} className={classes.section}>
-                <InsightsTable />
-              </Grid>
-            </Grid>
+            </Paper>
           </Grid>
-          <Grid item xs={6} className={classes.section}>
-            <AlertsTable alertsData={alertsData} setOpenModal={setOpenModal}/>
+          {/* Alerts table */}
+          <Grid item xs={6}>
+            <Paper
+              style={{ margin: "0.75rem", padding: "0.75rem 2rem 2rem 2rem" }}
+            >
+              <AlertsTable
+                alertsData={alertsData}
+                setOpenModal={setOpenModal}
+              />
+            </Paper>
           </Grid>
         </Grid>
+
         <ModalComponent
           openModal={openModal}
           closeModal={() => setOpenModal({ status: false, data: { id: 0 } })}
           handleSelect={(data) => handleBooking(data)}
         />
+        <Footer />
       </Container>
     </>
   );

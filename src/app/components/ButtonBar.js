@@ -3,47 +3,67 @@ import React from "react";
 
 const useStyles = makeStyles({
   root: {
-    display: "flex",
-    justifyContent: "center",
-    marginTop: "1rem",
+    backgroundColor: "#fff",
+    borderBottom: "1px solid rgba(197, 200, 209, .5)",
+    padding: "0.5rem 1rem",
   },
   actionButton: {
-    marginRight: "3rem",
-    backgroundColor: "rgb(208 225 243)",
-    width: "9rem",
-    boxShadow: "none",
-    border: "1px solid rgb(169,169,169)",
+    marginRight: "0.5rem",
+
+    "& .MuiButton-label": {
+      textTransform: "uppercase",
+    },
   },
 });
 
 const ButtonBar = ({
-  handleOnStart,
-  handleOnStop,
-  isLoading,
-  isStartButtonDisabled,
-  isStopButtonDisabled,
   isStreamStarted,
+  handleOnStart,
+  isStartButtonDisabled,
+  handleOnStop,
+  isStopButtonDisabled,
+  handleOnClear,
+  isClearButtonDisabled,
 }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <Button
-        variant="contained"
-        className={classes.actionButton}
-        onClick={handleOnStart}
-        disabled={(isStartButtonDisabled && !isStopButtonDisabled) || isStreamStarted}
-      >
-        {isLoading ? <CircularProgress size={24} /> : "Start"}
-      </Button>
-      <Button
-        variant="contained"
-        className={classes.actionButton}
-        onClick={handleOnStop}
-        disabled={(!isStartButtonDisabled && isStopButtonDisabled) || !isStreamStarted}
-      >
-        {isStopButtonDisabled ? <CircularProgress size={24} /> : "Stop"}
-      </Button>
+      {!isStreamStarted ? (
+        <>
+          <Button
+            className={classes.actionButton}
+            color="primary"
+            disabled={isStartButtonDisabled}
+            onClick={handleOnStart}
+            variant="contained"
+          >
+            {isStartButtonDisabled ? <CircularProgress size={24} /> : "Start"}
+          </Button>
+          <Button
+            className={classes.actionButton}
+            disabled={isStreamStarted}
+            onClick={handleOnClear}
+            variant="contained"
+          >
+            {isClearButtonDisabled ? (
+              <CircularProgress size={24} />
+            ) : (
+              "Initialize"
+            )}
+          </Button>
+        </>
+      ) : (
+        <Button
+          className={classes.actionButton}
+          color="primary"
+          disabled={isStopButtonDisabled}
+          onClick={handleOnStop}
+          variant="contained"
+        >
+          {isStopButtonDisabled ? <CircularProgress size={24} /> : "Stop"}
+        </Button>
+      )}
     </div>
   );
 };
