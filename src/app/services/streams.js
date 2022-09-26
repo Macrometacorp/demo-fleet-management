@@ -159,7 +159,7 @@ export const createStreamReader = async (streamName, filters) => {
   try {
     response = await jsc8Client.createStreamReader(
       streamName,
-      `${streamName}-${Math.round(Math.random() * 1000)}`,
+      `${streamName}-consumer`,
       false,
       false,
       config.gdnURL.replace("https://", ""),
