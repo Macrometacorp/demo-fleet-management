@@ -154,19 +154,40 @@ export const startStopStream = async (start = false) => {
   }
 };
 
-export const createStreamReader = async (streamName, filters) => {
-  let response;
+export const createStreamReader = async (streamName) => {
+  /* In this functions, we're NOT going to use jsc8 client,
+   * but we're going to take advantage of it. We'll fetch
+   * all the data we need to build our OTP request and
+   * the web socket connection.
+   */
+  let ws;
+
   try {
-    response = await jsc8Client.createStreamReader(
-      streamName,
-      `${streamName}-consumer`,
-      false,
-      false,
-      config.gdnURL.replace("https://", ""),
-      { filters }
+    /* As a first step, we'll get the OTP.
+     * Later, the OTP will passed as query parameter in the
+     * URL parameter of the web socket instantiation.
+     */
+    const url = jsc8Client._connection._urls[0];
+    const headers = jsc8Client._connection._headers;
+
+    const response = await fetch(`${url}/apid/otp`, {
+      method: "POST",
+      headers,
+    });
+
+    const data = await response.json();
+
+    const urlWithoutProtocol = url.replace("https://", "");
+    const tenant = jsc8Client._connection._tenantName;
+    const fabric = `c8global.${jsc8Client._connection._fabricName}`;
+    const stream = `c8globals.${streamName}`;
+
+    ws = new WebSocket(
+      `wss://${urlWithoutProtocol}/_ws/ws/v2/reader/persistent/${tenant}/${fabric}/${stream}?messageId=latest&otp=${data.otp}`
     );
   } catch (error) {
     console.error(error);
   }
-  return response;
+
+  return ws;
 };

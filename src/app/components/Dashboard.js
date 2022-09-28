@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Container, makeStyles, Grid, Paper } from "@material-ui/core";
 import Header from "./Header";
 import ButtonBar from "./ButtonBar";
@@ -42,9 +42,10 @@ const Dashboard = () => {
   const [isStopLoading, setIsStopLoading] = useState(false);
   const [isIntializeLoading, setIsIntializeLoading] = useState(false);
   const [isStartButtonDisabled, setIsStartButtonDisabled] = useState(true);
-  const [streamConnections, setStreamConnections] = useState([]);
   const [alertsData, setAlertsData] = useState([]);
   const [openModal, setOpenModal] = useState({ status: false, data: {} });
+
+  const ws = useRef(null);
 
   const handleClose = (event) => {
     event.preventDefault();
@@ -150,9 +151,8 @@ const Dashboard = () => {
 
   const closeStreamAndWebSocket = async () => {
     try {
-      for (const elements of streamConnections) {
-        await elements.terminate();
-      }
+      ws.current.close();
+
       const response = await startStopStream();
       if (response) {
         setIsStreamStarted(false);
@@ -170,10 +170,9 @@ const Dashboard = () => {
         const alertsStreamConnection = await establishConnectionForFree(
           ENRICHTED_TELEMATICS
         );
-        setStreamConnections((prev) => [
-          ...streamConnections,
-          alertsStreamConnection,
-        ]);
+
+        ws.current = alertsStreamConnection;
+
         setIsStreamStarted(true);
       }
       setIsLoading(false);
@@ -184,25 +183,22 @@ const Dashboard = () => {
 
   const establishConnectionForFree = async (streamName) => {
     try {
-      const _consumer = await createStreamReader(streamName);
-      _consumer.on("open", () =>
-        console.info(`Connection open for ${streamName}`)
-      );
-      _consumer.on("error", (error) =>
-        console.error(`Connection error for ${streamName}`, error)
-      );
-      _consumer.on("close", () =>
-        console.info(`Connection close for ${streamName}`)
-      );
+      const reader = await createStreamReader(streamName);
 
-      _consumer.on("message", (message) => {
-        _consumer.send(
-          JSON.stringify({ messageId: JSON.parse(message).messageId })
+      reader.onopen = () => console.info(`Connection open for ${streamName}`);
+      reader.onerror = (error) =>
+        console.error(`Connection error for ${streamName}`, error);
+      reader.onclose = () => console.info(`Connection close for ${streamName}`);
+
+      reader.onmessage = (message) => {
+        reader.send(
+          JSON.stringify({ messageId: JSON.parse(message.data).messageId })
         );
 
-        messageManipulation(message, ENRICHTED_TELEMATICS);
-      });
-      return _consumer;
+        messageManipulation(message.data, ENRICHTED_TELEMATICS);
+      };
+
+      return reader;
     } catch (error) {
       console.error("error", error);
     }
