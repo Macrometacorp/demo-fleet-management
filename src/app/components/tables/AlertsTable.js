@@ -18,6 +18,7 @@ import {
   formatDate,
   printDate,
 } from "../../services/util";
+import { colors } from "../../styles/colors"
 
 const useStyles = makeStyles({
   table: {
@@ -31,8 +32,9 @@ const useStyles = makeStyles({
   },
   activeActionButton: { ...activeButtonClass, width: "4rem" },
   heading: {
-    margin: "10px",
-    fontSize: "28px",
+    color: colors.gray[700],
+    margin: "10px 0",
+    fontSize: "26px",
     fontWeight: 600,
   },
 });
@@ -100,7 +102,6 @@ export default function AlertsTable({ alertsData, setOpenModal }) {
   return (
     <>
       <div style={{ display: "flex" }}>
-        <span style={{ fontSize: 40 }}>🔔</span>
         <h3 className={classes.heading}>Alerts</h3>
       </div>
       <AlertFilters stats={alertStats} setAlterFilter={setAlterFilter} />
@@ -122,10 +123,7 @@ export default function AlertsTable({ alertsData, setOpenModal }) {
             <TableBody>
               {tdata &&
                 tdata.map((row, i) => (
-                  <TableRow
-                    key={Math.random()}
-                    style={i % 2 ? { background: "rgb(208 225 243)" } : {}}
-                  >
+                  <TableRow>
                     <TableCell align="center">{row.Asset}</TableCell>
                     <TableCell align="center">{row.Fault}</TableCell>
                     <TableCell align="center">

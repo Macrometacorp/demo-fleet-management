@@ -106,7 +106,7 @@ const theme = createMuiTheme({
     },
     MuiTableHead: {
       root: {
-        backgroundColor: "#4b81c3",
+        backgroundColor: colors.purple[400],
       },
     },
     MuiTableContainer: {

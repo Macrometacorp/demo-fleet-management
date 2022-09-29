@@ -4,7 +4,7 @@ import { Grid, makeStyles } from "@material-ui/core";
 import ChartFilters from "./ChartFilters";
 import { fleetChartData } from "../services/streams";
 import useInterval from "../hooks/useInterval";
-
+import { colors } from "../styles/colors"
 // LineChart
 
 const useStyles = makeStyles({
@@ -26,8 +26,9 @@ const useStyles = makeStyles({
     height: "19.5rem",
   },
   heading: {
-    margin: "10px",
-    fontSize: "28px",
+    color: colors.gray[700],
+    margin: "10px 0",
+    fontSize: "26px",
     fontWeight: 600,
   },
 });
@@ -119,7 +120,6 @@ const LineChart = () => {
         <Grid container alignItems="center">
           <Grid item>
             <div style={{ display: "flex" }}>
-              <span style={{ fontSize: 40 }}>🚚</span>
               <h3 className={classes.heading}>Fleet Status</h3>
             </div>
           </Grid>

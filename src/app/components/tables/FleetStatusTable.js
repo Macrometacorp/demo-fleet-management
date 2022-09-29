@@ -6,17 +6,18 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  Paper,
 } from "@material-ui/core";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { fleetStats } from "../../services/streams";
 import useInterval from "../../hooks/useInterval";
+import { colors } from "../../styles/colors";
 
 const useStyles = makeStyles({
   tableCell: {
-    padding: "1.9px 10px",
-    border: "1px solid",
+      color: colors.gray[600],
+      border: `1px solid ${colors.gray[200]}`,
+      padding: "1.9px 10px",
   },
 });
 
@@ -66,8 +67,8 @@ export default function FleetStatusTable() {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="custom pagination table">
+    <TableContainer >
+      <Table aria-label="custom pagination table">
         <TableBody>
           {Object.keys(tdata) &&
             Object.keys(tdata).map((key, i) => (

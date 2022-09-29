@@ -6,20 +6,21 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  Paper,
 } from "@material-ui/core";
 import { insightList } from "../../services/streams";
 import useInterval from "../../hooks/useInterval";
+import { colors } from "../../styles/colors";
 
 const useStyles = makeStyles({
   tableCell: {
-    padding: "0.7rem",
-    border: "1px solid",
+    color: colors.gray[600],
+    border: `1px solid ${colors.gray[200]}`,
   },
   heading: {
-    margin: "10px",
-    fontSize: "28px",
-    fontWeight: 400,
+    color: colors.gray[700],
+    margin: "10px 0",
+    fontSize: "26px",
+    fontWeight: 600,
   },
 });
 
@@ -49,10 +50,9 @@ export default function InsightsTable() {
   return (
     <>
       <div style={{ display: "flex", marginBottom: "10px" }}>
-        <span style={{ fontSize: 40 }}>🔍</span>
         <h3 className={classes.heading}> Insights</h3>
       </div>
-      <TableContainer component={Paper}>
+      <TableContainer>
         <Table className={classes.table} aria-label="custom pagination table">
           <TableBody>
             {Object.keys(tdata) &&
