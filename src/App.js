@@ -1,4 +1,6 @@
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+
+import { colors } from "./app/styles/colors";
 import Dashboard from "./app/components/Dashboard";
 
 const theme = createMuiTheme({
@@ -68,37 +70,37 @@ const theme = createMuiTheme({
     },
     MuiPaginationItem: {
       root: {
-        borderRadius: "0px",
+        borderRadius: "4px",
       },
       page: {
         padding: "23px",
         "&$selected": {
-          backgroundColor: "#4b81c3",
-          color: "#ffffff",
+          backgroundColor: colors.purple[500],
+          color: "white",
+
           "&:hover": {
-            backgroundColor: "#4b81c3",
-            color: "#ffffff",
+            backgroundColor: colors.purple[600],
           },
         },
         "&:hover": {
-          backgroundColor: "#4b81c3",
-          color: "#ffffff",
+          backgroundColor: colors.gray[50],
         },
       },
     },
     MuiToggleButton: {
       root: {
+        borderRadius: "4px",
+        color: colors.gray[600],
         "&$selected": {
-          backgroundColor: "#4b81c3",
-          color: "#ffffff",
+          backgroundColor: colors.purple[500],
+          color: "white",
+
           "&:hover": {
-            backgroundColor: "#4b81c3",
-            color: "#ffffff",
+            backgroundColor: colors.purple[600],
           },
         },
         "&:hover": {
-          backgroundColor: "#4b81c3",
-          color: "#ffffff",
+          backgroundColor: colors.gray[50],
         },
       },
     },
