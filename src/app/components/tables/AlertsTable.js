@@ -110,20 +110,18 @@ export default function AlertsTable({ alertsData, setOpenModal }) {
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell style={{ width: "5rem" }}>Vehicle ID</TableCell>
-                <TableCell align="center">Alert &nbsp; Description</TableCell>
-                <TableCell align="center">Date &nbsp; Logged</TableCell>
-                <TableCell align="center">Status level</TableCell>
-                <TableCell align="center">Maintenance &nbsp; Planned</TableCell>
-                <TableCell align="center" style={{ width: "5rem" }}>
-                  Action
-                </TableCell>
+                <TableCell align="center">Vehicle ID</TableCell>
+                <TableCell align="center">Alert Description</TableCell>
+                <TableCell align="center">Date Logged</TableCell>
+                <TableCell align="center">Status Level</TableCell>
+                <TableCell align="center">Maintenance Planned</TableCell>
+                <TableCell align="center">Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {tdata &&
                 tdata.map((row, i) => (
-                  <TableRow>
+                  <TableRow key={i}>
                     <TableCell align="center">{row.Asset}</TableCell>
                     <TableCell align="center">{row.Fault}</TableCell>
                     <TableCell align="center">

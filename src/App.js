@@ -5,7 +5,7 @@ import Dashboard from "./app/components/Dashboard";
 
 const theme = createMuiTheme({
   typography: {
-    fontFamily: ["Lato", "sans-serif"].join(","),
+    fontFamily: ["Mulish", "sans-serif"].join(","),
   },
   overrides: {
     MuiTableCell: {
@@ -17,8 +17,11 @@ const theme = createMuiTheme({
       },
       head: {
         color: "#ffffff",
-        fontWeight: 900,
+        fontWeight: 700,
       },
+      body: {
+        color: colors.gray[600]
+      }
     },
     MuiTypography: {
       root: {
@@ -27,25 +30,30 @@ const theme = createMuiTheme({
     },
     MuiButton: {
       contained: {
-        backgroundColor: "#E1E1FA",
+        backgroundColor: colors.gray[50],
         boxShadow: "none",
-        color: "#4D4DAD",
+        color: colors.gray[700],
+
         "&:hover, &:focus, &:active": {
-          backgroundColor: "#C2C2F5",
-          boxShadow: "0 2px 5px rgba(133, 133, 235, .35)",
-          color: "#343473",
+          backgroundColor: colors.gray[100],
+          boxShadow: "none",
+          color: colors.gray[700],
         },
+
         "&:disabled": {
           backgroundColor: "#E2E4E8",
           color: "#535968",
         },
       },
       containedPrimary: {
-        backgroundColor: "#6767E6",
-        color: "#FFF",
+        backgroundColor: colors.purple[500],
+        boxShadow: "none",
+        color: "white",
+
         "&:hover, &:focus, &:active": {
-          backgroundColor: "#4D4DAD",
-          color: "#FFF",
+          backgroundColor: colors.purple[600],
+          boxShadow: "none",
+          color: "white",
         },
       },
       label: {
@@ -72,7 +80,11 @@ const theme = createMuiTheme({
       root: {
         borderRadius: "4px",
       },
+      icon: {
+        color: colors.gray[600]
+      },
       page: {
+        color: colors.gray[600],
         padding: "23px",
         "&$selected": {
           backgroundColor: colors.purple[500],

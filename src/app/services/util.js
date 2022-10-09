@@ -1,15 +1,17 @@
 import moment from "moment";
 
+import { colors } from "../styles/colors";
+
 export const activeButtonClass = {
-  backgroundColor: "#4b81c3",
-  width: "9rem",
+  backgroundColor: colors.purple[500],
+  border: `1px solid ${colors.purple[200]}`,
+  borderRadius: "4px",
   boxShadow: "none",
-  border: "1px solid rgb(169,169,169)",
-  color: "#ffffff",
-  borderRadius: 0,
+  color: "white",
+  width: "9rem",
   "&:hover": {
-    backgroundColor: "#4b81c3",
-    color: "#ffffff",
+    backgroundColor: colors.purple[600],
+    color: "white",
   },
 };
 

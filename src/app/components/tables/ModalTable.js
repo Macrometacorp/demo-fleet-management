@@ -69,19 +69,19 @@ export default function ModalTable({handleSelect, alertData}) {
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Maintenance Center</TableCell>
+                <TableCell align="center">Maintenance Center</TableCell>
                 <TableCell align="center">Rating</TableCell>
                 <TableCell align="center">City</TableCell>
                 <TableCell align="center">Estimated Time</TableCell>
                 <TableCell align="center">Estimated Cost</TableCell>
                 <TableCell align="center">Select
-                <DatePicker
-                  minDate={new Date()}
-                  ref={(r) => {
-                    component.current = r;
-                  }}
-                  onChange={handleChange}
-                />
+                  <DatePicker
+                    minDate={new Date()}
+                    ref={(r) => {
+                      component.current = r;
+                    }}
+                    onChange={handleChange}
+                  />
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -90,7 +90,6 @@ export default function ModalTable({handleSelect, alertData}) {
                 data.map((row, i) => (
                   <TableRow
                     key={Math.random()}
-                    style={i % 2 ? { background: "rgb(208 225 243)" } : {}}
                   >
                     <TableCell align="center">
                       {row.Name}

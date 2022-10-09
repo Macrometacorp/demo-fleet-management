@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles, Button } from "@material-ui/core";
 import { activeButtonClass } from "../../services/util";
+import { colors } from "../../styles/colors"
 
 const useStyles = makeStyles((theme) => ({
   actionButton: {
     backgroundColor: "#ffffff",
-    width: "9rem",
+    border: `1px solid ${colors.gray[200]}`,
+    borderRadius: "4px",
     boxShadow: "none",
-    border: "1px solid rgb(169,169,169)",
-    borderRadius: 0
+    color: colors.gray[600],
+    width: "9rem",
   },
   activeActionButton: activeButtonClass,
   root: {

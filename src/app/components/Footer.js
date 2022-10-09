@@ -12,11 +12,6 @@ const useStyles = makeStyles({
     color: "rgba(33, 33, 33, 0.6) !important",
     marginRight: "8px",
   },
-  logo: {
-    paddingRight: "4px",
-    height: "30px",
-    width: "30px",
-  },
 });
 
 const Footer = () => {
