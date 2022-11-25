@@ -14,7 +14,7 @@ Simple, secure and scalable realtime fleet management.
 
 | **Federation**                                        | **Email**                   | **Passsword** |
 | ----------------------------------------------------- | --------------------------- | ------------- |
-| [Global Data Network](https://gdn.paas.macrometa.io/) | demo-fleet1-management@macrometa.io                          | `xxxxxxxx`    |
+| [Global Data Network](https://play.macrometa.io/) | demo-fleet-management@macrometa.io                          | `xxxxxxxx`    |
 | [Demo Dashboard](https://macrometacorp.github.io/demo-fleet-management/)                                 | --                          | --            |
 
 ## How to Run
