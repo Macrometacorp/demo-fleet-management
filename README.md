@@ -12,10 +12,9 @@ Simple, secure and scalable realtime fleet management.
 
 ## Setup
 
-| **Federation**                                        | **Email**                   | **Passsword** |
-| ----------------------------------------------------- | --------------------------- | ------------- |
-| [Global Data Network](https://play.macrometa.io/) | demo-fleet-management@macrometa.io                          | `xxxxxxxx`    |
-| [Demo Dashboard](https://macrometacorp.github.io/demo-fleet-management/)                                 | --                          | --            |
+| **Federation**                     | **Fabric**       | **Email**         |
+|------------------------------------|------------------|-------------------|
+| [Play](https://play.macrometa.io/) | fleet_management | demo@macrometa.io |
 
 ## How to Run
 
